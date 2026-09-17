@@ -1,6 +1,11 @@
 -- DBS Pricing Calculator - schema do Supabase
 -- Rode este arquivo inteiro no SQL Editor do seu projeto Supabase (uma vez só).
 
+-- Sem isso, toda consulta das tabelas abaixo falha com "permission denied for
+-- table ..." mesmo com as policies de RLS corretas - RLS só é consultado depois
+-- que o grant de tabela permite a operação.
+grant usage on schema public to authenticated;
+
 -- ---------------------------------------------------------------------------
 -- profiles: espelha auth.users, guarda o "role" (admin | user)
 -- ---------------------------------------------------------------------------
@@ -12,6 +17,7 @@ create table if not exists public.profiles (
 );
 
 alter table public.profiles enable row level security;
+grant select, update on public.profiles to authenticated;
 
 create policy "profiles: users read own" on public.profiles
   for select using (auth.uid() = id);
@@ -63,6 +69,7 @@ create table if not exists public.pricing_policy (
 );
 
 alter table public.pricing_policy enable row level security;
+grant select, insert, update on public.pricing_policy to authenticated;
 
 create policy "pricing_policy: read for authenticated" on public.pricing_policy
   for select using (auth.role() = 'authenticated');
@@ -87,6 +94,7 @@ create table if not exists public.salespeople (
 );
 
 alter table public.salespeople enable row level security;
+grant select, insert, update, delete on public.salespeople to authenticated;
 
 create policy "salespeople: full access for authenticated" on public.salespeople
   for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
@@ -112,6 +120,7 @@ create table if not exists public.service_rules (
 );
 
 alter table public.service_rules enable row level security;
+grant select, insert, update on public.service_rules to authenticated;
 
 create policy "service_rules: read for authenticated" on public.service_rules
   for select using (auth.role() = 'authenticated');
@@ -148,6 +157,7 @@ create table if not exists public.team_members (
 );
 
 alter table public.team_members enable row level security;
+grant select, insert, update, delete on public.team_members to authenticated;
 
 create policy "team_members: full access for authenticated" on public.team_members
   for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
@@ -188,6 +198,7 @@ create table if not exists public.quotes (
 );
 
 alter table public.quotes enable row level security;
+grant select, insert, delete on public.quotes to authenticated;
 
 create policy "quotes: read for authenticated" on public.quotes
   for select using (auth.role() = 'authenticated');
