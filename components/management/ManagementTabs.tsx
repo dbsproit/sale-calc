@@ -3,15 +3,18 @@
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { DEFAULT_SERVICE_RULES, type ServiceRule } from "@/lib/pricing-engine";
-import type { PricingPolicyRow, SalespersonRow, ServiceRuleRow, TeamMemberRow } from "@/lib/supabase/types";
+import type { PricingPolicyRow, SalespersonRow, ServiceRuleRow, TeamMemberRow, UserRole } from "@/lib/supabase/types";
+import type { ManagedUser } from "@/app/actions/users";
+import { createUser, deleteUser, resetUserPassword, setUserRole } from "@/app/actions/users";
 
-const TABS = [
+const ALL_TABS = [
   { key: "policy", label: "Pricing Policy" },
   { key: "people", label: "Salespeople & Commission" },
   { key: "services", label: "Service Pricing Rules" },
   { key: "team", label: "Rate Card (Team)" },
+  { key: "users", label: "Users & Access", adminOnly: true },
 ] as const;
-type TabKey = (typeof TABS)[number]["key"];
+type TabKey = (typeof ALL_TABS)[number]["key"];
 
 interface Props {
   isAdmin: boolean;
@@ -19,16 +22,18 @@ interface Props {
   salespeople: SalespersonRow[];
   serviceRules: ServiceRuleRow[];
   teamMembers: TeamMemberRow[];
+  users: ManagedUser[];
 }
 
-export function ManagementTabs({ isAdmin, policy, salespeople, serviceRules, teamMembers }: Props) {
+export function ManagementTabs({ isAdmin, policy, salespeople, serviceRules, teamMembers, users }: Props) {
   const [tab, setTab] = useState<TabKey>("policy");
+  const tabs = ALL_TABS.filter((t) => !("adminOnly" in t) || !t.adminOnly || isAdmin);
 
   return (
     <>
       <h2>Pricing Management</h2>
       <div className="tabs">
-        {TABS.map((t) => (
+        {tabs.map((t) => (
           <button key={t.key} className={`tab-btn${tab === t.key ? " active" : ""}`} onClick={() => setTab(t.key)}>
             {t.label}
           </button>
@@ -39,6 +44,7 @@ export function ManagementTabs({ isAdmin, policy, salespeople, serviceRules, tea
         {tab === "people" && <PeopleTab isAdmin={isAdmin} initial={salespeople} defaultCommission={policy.default_commission_pct} />}
         {tab === "services" && <ServicesTab isAdmin={isAdmin} initialRules={serviceRules} />}
         {tab === "team" && <TeamTab initial={teamMembers} />}
+        {tab === "users" && isAdmin && <UsersTab initial={users} />}
       </div>
     </>
   );
@@ -513,6 +519,152 @@ function TeamTab({ initial }: { initial: TeamMemberRow[] }) {
               <td>
                 <button className="btn btn-secondary" style={{ padding: "4px 10px" }} onClick={() => void handleRemove(m.id)}>
                   Remove
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  );
+}
+
+// --------------------------------------------------------------------
+function UsersTab({ initial }: { initial: ManagedUser[] }) {
+  const [users, setUsers] = useState(initial);
+  const [form, setForm] = useState({ fullName: "", email: "", password: "", role: "user" as UserRole });
+  const [creating, setCreating] = useState(false);
+  const [busyId, setBusyId] = useState<string | null>(null);
+  const [armedDeleteId, setArmedDeleteId] = useState<string | null>(null);
+
+  async function handleCreate() {
+    if (!form.email.trim() || form.password.length < 6) {
+      alert("Preencha o email e uma senha com pelo menos 6 caracteres.");
+      return;
+    }
+    setCreating(true);
+    const result = await createUser({ email: form.email, password: form.password, fullName: form.fullName, role: form.role });
+    setCreating(false);
+    if (result?.error) {
+      alert("Erro: " + result.error);
+      return;
+    }
+    if (result?.user) setUsers((prev) => [...prev, result.user].sort((a, b) => a.email.localeCompare(b.email)));
+    setForm({ fullName: "", email: "", password: "", role: "user" });
+    alert("Usuário criado.");
+  }
+
+  async function handleRoleChange(u: ManagedUser, role: UserRole) {
+    setBusyId(u.id);
+    const result = await setUserRole(u.id, role);
+    setBusyId(null);
+    if (result?.error) {
+      alert("Erro: " + result.error);
+      return;
+    }
+    setUsers((prev) => prev.map((x) => (x.id === u.id ? { ...x, role } : x)));
+  }
+
+  async function handleResetPassword(u: ManagedUser) {
+    const newPassword = prompt(`Nova senha para ${u.email}:`);
+    if (!newPassword) return;
+    setBusyId(u.id);
+    const result = await resetUserPassword(u.id, newPassword);
+    setBusyId(null);
+    if (result?.error) {
+      alert("Erro: " + result.error);
+      return;
+    }
+    alert("Senha atualizada.");
+  }
+
+  async function handleDelete(u: ManagedUser) {
+    if (armedDeleteId !== u.id) {
+      setArmedDeleteId(u.id);
+      return;
+    }
+    setBusyId(u.id);
+    const result = await deleteUser(u.id);
+    setBusyId(null);
+    if (result?.error) {
+      alert("Erro: " + result.error);
+      return;
+    }
+    setUsers((prev) => prev.filter((x) => x.id !== u.id));
+    setArmedDeleteId(null);
+  }
+
+  return (
+    <>
+      <div className="section-header">
+        <div>
+          <div className="title">Usuários</div>
+          <div className="subtitle">Quem pode entrar no app. Não há cadastro público - só admins criam contas por aqui.</div>
+        </div>
+      </div>
+      <div className="field-grid">
+        <div className="field">
+          <label htmlFor="u_name">Nome</label>
+          <input id="u_name" type="text" value={form.fullName} onChange={(e) => setForm((f) => ({ ...f, fullName: e.target.value }))} />
+        </div>
+        <div className="field">
+          <label htmlFor="u_email">Email</label>
+          <input id="u_email" type="email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} />
+        </div>
+        <div className="field">
+          <label htmlFor="u_password">Senha inicial</label>
+          <input id="u_password" type="text" value={form.password} onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))} />
+          <div className="hint">Pelo menos 6 caracteres. A pessoa pode trocar depois em Settings.</div>
+        </div>
+        <div className="field">
+          <label htmlFor="u_role">Papel</label>
+          <select id="u_role" value={form.role} onChange={(e) => setForm((f) => ({ ...f, role: e.target.value as UserRole }))}>
+            <option value="user">Usuário</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+      </div>
+      <div className="btn-row">
+        <button className="btn btn-primary" disabled={creating} onClick={handleCreate}>
+          {creating ? "Criando..." : "+ Add user"}
+        </button>
+      </div>
+      <table className="hist-table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Papel</th>
+            <th>Criado em</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((u) => (
+            <tr key={u.id}>
+              <td>{u.full_name || "-"}</td>
+              <td>{u.email}</td>
+              <td>
+                <select value={u.role} disabled={busyId === u.id} onChange={(e) => void handleRoleChange(u, e.target.value as UserRole)}>
+                  <option value="user">Usuário</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </td>
+              <td>{new Date(u.created_at).toLocaleDateString()}</td>
+              <td style={{ display: "flex", gap: 6 }}>
+                <button className="btn btn-secondary" style={{ padding: "4px 10px", fontSize: 12 }} disabled={busyId === u.id} onClick={() => void handleResetPassword(u)}>
+                  Reset senha
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  style={{
+                    padding: "4px 10px", fontSize: 12,
+                    ...(armedDeleteId === u.id ? { background: "var(--red)", color: "#fff", borderColor: "var(--red)" } : {}),
+                  }}
+                  disabled={busyId === u.id}
+                  onClick={() => void handleDelete(u)}
+                >
+                  {armedDeleteId === u.id ? "Confirm?" : "Remove"}
                 </button>
               </td>
             </tr>

@@ -34,3 +34,14 @@ export const requireProfile = cache(async (): Promise<ProfileRow> => {
   if (!profile) redirect("/login");
   return profile;
 });
+
+// Para Server Actions administrativas: lança em vez de redirecionar, já que
+// essas actions são chamadas via fetch/form e o chamador precisa poder
+// capturar o erro (redirect() no meio de uma Server Action quebra a resposta).
+export async function requireAdmin(): Promise<ProfileRow> {
+  const profile = await getCurrentProfile();
+  if (!profile || profile.role !== "admin") {
+    throw new Error("Apenas administradores podem fazer isso.");
+  }
+  return profile;
+}

@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { href: "/history", label: "◷ History" },
   { href: "/dashboard", label: "▥ Dashboard" },
   { href: "/management", label: "⚙ Management" },
+  { href: "/settings", label: "⚈ Settings" },
 ];
 
 export function Sidebar({ profile }: { profile: ProfileRow }) {
