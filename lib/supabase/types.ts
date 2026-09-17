@@ -93,6 +93,16 @@ export type QuoteRow = {
 
 type Table<Row, Insert> = { Row: Row; Insert: Insert; Update: Partial<Row>; Relationships: [] };
 
+// Formato retornado pela função SQL public.dashboard_stats() (ver supabase/schema.sql).
+export type DashboardStats = {
+  totalJobs: number;
+  avgMargin: number | null;
+  totalRevenue: number;
+  bandCounts: { GREEN: number; YELLOW: number; ORANGE: number; RED: number };
+  topClients: [string, number][];
+  topSalespeople: [string, number][];
+};
+
 export type Database = {
   public: {
     Tables: {
@@ -104,6 +114,8 @@ export type Database = {
       quotes: Table<QuoteRow, Partial<QuoteRow>>;
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      dashboard_stats: { Args: Record<string, never>; Returns: DashboardStats };
+    };
   };
 };

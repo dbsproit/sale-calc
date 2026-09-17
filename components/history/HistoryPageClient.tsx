@@ -24,7 +24,7 @@ function quotesToLegacyText(rows: QuoteRow[]): string {
   return [HISTORY_HEADERS.join("|"), ...lines].join("\n") + "\n";
 }
 
-export function HistoryPageClient({ initialQuotes }: { initialQuotes: QuoteRow[] }) {
+export function HistoryPageClient({ initialQuotes, isAdmin }: { initialQuotes: QuoteRow[]; isAdmin: boolean }) {
   const [quotes, setQuotes] = useState(initialQuotes);
   const [importing, setImporting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -87,7 +87,9 @@ export function HistoryPageClient({ initialQuotes }: { initialQuotes: QuoteRow[]
           <div className="icon">◷</div>
           <div>
             <div className="title">Quote history</div>
-            <div className="subtitle">{quotes.length} orçamento(s) salvos no banco de dados</div>
+            <div className="subtitle">
+              {quotes.length} orçamento(s) {isAdmin ? "salvos no banco de dados (todos os usuários)" : "salvos por você"}
+            </div>
           </div>
         </div>
         <div className="btn-row">

@@ -618,8 +618,8 @@ function StepLabor({
 // --------------------------------------------------------------------
 function StepMaterials({ form, errors, onNumeric }: { form: FormState; errors: Record<string, string>; onNumeric: (k: keyof FormState, v: string) => void }) {
   const fields: [keyof FormState, string][] = [
-    ["chemicals", "Chemicals"], ["machine", "Machine / equipment"], ["consumables", "Consumables (pads/brushes)"],
-    ["water", "Water"], ["vehicle", "Vehicle / travel"],
+    ["chemicals", "Chemicals $"], ["machine", "Machine / equipment $"], ["consumables", "Consumables (pads/brushes) $"],
+    ["water", "Water $"], ["vehicle", "Vehicle / travel $"],
   ];
   return (
     <div>

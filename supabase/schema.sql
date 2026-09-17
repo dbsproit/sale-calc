@@ -200,13 +200,59 @@ create table if not exists public.quotes (
 alter table public.quotes enable row level security;
 grant select, insert, delete on public.quotes to authenticated;
 
-create policy "quotes: read for authenticated" on public.quotes
-  for select using (auth.role() = 'authenticated');
+-- Histórico privado: cada usuário só lê os próprios orçamentos, admin vê tudo.
+-- O Dashboard usa dashboard_stats() (abaixo) para ver os números agregados de
+-- toda a equipe sem essa policy expor as linhas de quem não é dono/admin.
+create policy "quotes: read own or admin" on public.quotes
+  for select using (created_by = auth.uid() or public.is_admin());
 
 create policy "quotes: insert own" on public.quotes
-  for insert with check (auth.role() = 'authenticated');
+  for insert with check (auth.role() = 'authenticated' and created_by = auth.uid());
 
 create policy "quotes: admin delete" on public.quotes
   for delete using (public.is_admin());
 
 create index if not exists quotes_created_at_idx on public.quotes (created_at desc);
+
+create or replace function public.dashboard_stats()
+returns jsonb
+language sql
+security definer set search_path = public
+stable
+as $$
+  select jsonb_build_object(
+    'totalJobs', count(*),
+    'avgMargin', avg(margin_pct),
+    'totalRevenue', coalesce(sum(client_total), 0),
+    'bandCounts', jsonb_build_object(
+      'GREEN', count(*) filter (where result_label ilike 'GREEN%'),
+      'YELLOW', count(*) filter (where result_label ilike 'YELLOW%'),
+      'ORANGE', count(*) filter (where result_label ilike 'ORANGE%'),
+      'RED', count(*) filter (where result_label ilike 'RED%')
+    ),
+    'topClients', (
+      select coalesce(jsonb_agg(jsonb_build_array(client_name, revenue)), '[]'::jsonb)
+      from (
+        select coalesce(nullif(trim(client), ''), '(no client name)') as client_name, sum(client_total) as revenue
+        from public.quotes
+        group by 1
+        order by revenue desc
+        limit 5
+      ) t
+    ),
+    'topSalespeople', (
+      select coalesce(jsonb_agg(jsonb_build_array(salesperson, commission)), '[]'::jsonb)
+      from (
+        select salesperson, sum(commission_amt) as commission
+        from public.quotes
+        where salesperson is not null and trim(salesperson) <> ''
+        group by 1
+        order by commission desc
+        limit 5
+      ) t
+    )
+  )
+  from public.quotes;
+$$;
+
+grant execute on function public.dashboard_stats() to authenticated;
