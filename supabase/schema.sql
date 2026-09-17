@@ -3,8 +3,11 @@
 
 -- Sem isso, toda consulta das tabelas abaixo falha com "permission denied for
 -- table ..." mesmo com as policies de RLS corretas - RLS só é consultado depois
--- que o grant de tabela permite a operação.
-grant usage on schema public to authenticated;
+-- que o grant de tabela permite a operação. service_role (usado nas Server
+-- Actions administrativas, ex: app/actions/users.ts) ignora RLS mas ainda
+-- precisa do grant de tabela - por padrão ele só vem com TRIGGER/REFERENCES/
+-- TRUNCATE em tabelas criadas fora do dashboard do Supabase.
+grant usage on schema public to authenticated, service_role;
 
 -- ---------------------------------------------------------------------------
 -- profiles: espelha auth.users, guarda o "role" (admin | user)
@@ -18,6 +21,7 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 grant select, update on public.profiles to authenticated;
+grant all on public.profiles to service_role;
 
 create policy "profiles: users read own" on public.profiles
   for select using (auth.uid() = id);
@@ -70,6 +74,7 @@ create table if not exists public.pricing_policy (
 
 alter table public.pricing_policy enable row level security;
 grant select, insert, update on public.pricing_policy to authenticated;
+grant all on public.pricing_policy to service_role;
 
 create policy "pricing_policy: read for authenticated" on public.pricing_policy
   for select using (auth.role() = 'authenticated');
@@ -95,6 +100,7 @@ create table if not exists public.salespeople (
 
 alter table public.salespeople enable row level security;
 grant select, insert, update, delete on public.salespeople to authenticated;
+grant all on public.salespeople to service_role;
 
 create policy "salespeople: full access for authenticated" on public.salespeople
   for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
@@ -121,6 +127,7 @@ create table if not exists public.service_rules (
 
 alter table public.service_rules enable row level security;
 grant select, insert, update on public.service_rules to authenticated;
+grant all on public.service_rules to service_role;
 
 create policy "service_rules: read for authenticated" on public.service_rules
   for select using (auth.role() = 'authenticated');
@@ -158,6 +165,7 @@ create table if not exists public.team_members (
 
 alter table public.team_members enable row level security;
 grant select, insert, update, delete on public.team_members to authenticated;
+grant all on public.team_members to service_role;
 
 create policy "team_members: full access for authenticated" on public.team_members
   for all using (auth.role() = 'authenticated') with check (auth.role() = 'authenticated');
@@ -199,6 +207,7 @@ create table if not exists public.quotes (
 
 alter table public.quotes enable row level security;
 grant select, insert, delete on public.quotes to authenticated;
+grant all on public.quotes to service_role;
 
 -- Histórico privado: cada usuário só lê os próprios orçamentos, admin vê tudo.
 -- O Dashboard usa dashboard_stats() (abaixo) para ver os números agregados de
