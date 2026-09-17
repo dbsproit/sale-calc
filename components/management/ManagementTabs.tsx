@@ -203,7 +203,7 @@ function PeopleTab({ isAdmin, initial, defaultCommission }: { isAdmin: boolean; 
       <div className="field-grid">
         <div className="field">
           <label htmlFor="sp_name">Name</label>
-          <input id="sp_name" value={name} onChange={(e) => setName(e.target.value)} />
+          <input id="sp_name" type="text" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
         <div className="field">
           <label htmlFor="sp_commission">Commission %</label>

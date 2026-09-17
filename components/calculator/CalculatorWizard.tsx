@@ -382,16 +382,16 @@ function StepJobMode({
       <div className="field-grid">
         <div className="field">
           <label htmlFor="f_client">Client</label>
-          <input id="f_client" list="clientNamesList" value={form.client} onChange={(e) => onField("client", e.target.value)} />
+          <input id="f_client" type="text" list="clientNamesList" value={form.client} onChange={(e) => onField("client", e.target.value)} />
         </div>
         <div className="field">
           <label htmlFor="f_salesperson">Salesperson</label>
-          <input id="f_salesperson" list="salespersonNamesList" value={form.salesperson} onChange={(e) => onSalesperson(e.target.value)} />
+          <input id="f_salesperson" type="text" list="salespersonNamesList" value={form.salesperson} onChange={(e) => onSalesperson(e.target.value)} />
           <div className="hint">used for the real commission</div>
         </div>
         <div className="field">
           <label htmlFor="f_location">Location</label>
-          <input id="f_location" value={form.location} onChange={(e) => onField("location", e.target.value)} />
+          <input id="f_location" type="text" value={form.location} onChange={(e) => onField("location", e.target.value)} />
         </div>
         <div className="field">
           <label htmlFor="f_service">Service category</label>
@@ -406,7 +406,7 @@ function StepJobMode({
         </div>
         <div className="field">
           <label htmlFor="f_invoice">Invoice #</label>
-          <input id="f_invoice" value={form.invoice} onChange={(e) => onField("invoice", e.target.value)} />
+          <input id="f_invoice" type="text" value={form.invoice} onChange={(e) => onField("invoice", e.target.value)} />
         </div>
         <div className="field">
           <label htmlFor="f_date">Service date</label>
@@ -451,7 +451,7 @@ function StepJobMode({
         <div className="field-grid">
           <div className="field">
             <label htmlFor="f_unitLabel">Unit label</label>
-            <input id="f_unitLabel" value={form.unitLabel} onChange={(e) => onField("unitLabel", e.target.value)} />
+            <input id="f_unitLabel" type="text" value={form.unitLabel} onChange={(e) => onField("unitLabel", e.target.value)} />
           </div>
           <div className="field">
             <label htmlFor="f_unitQuantity">Quantity</label>
