@@ -30,7 +30,7 @@ export default function LoginPage() {
   return (
     <div className="login-shell">
       <div className="login-card">
-        <Image src="/logo.png" alt="DBS Building Services" width={168} height={81} className="brand-logo" priority />
+        <Image src="/logo.png" alt="DBS Building Services" width={299} height={73} className="brand-logo" priority />
         <div className="section-header" style={{ marginTop: 20 }}>
           <div>
             <div className="title">DBS Pricing Calculator</div>

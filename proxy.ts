@@ -34,16 +34,25 @@ export async function proxy(request: NextRequest) {
   if (!user && !isLoginRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
-    return NextResponse.redirect(url);
+    return withRefreshedCookies(NextResponse.redirect(url), response);
   }
 
   if (user && isLoginRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/calculator";
-    return NextResponse.redirect(url);
+    return withRefreshedCookies(NextResponse.redirect(url), response);
   }
 
   return response;
+}
+
+// getUser() pode renovar o token de sessão e tentar persistir o cookie novo via
+// setAll() em `response` - mas se decidirmos redirecionar, criamos um NextResponse
+// diferente. Sem copiar os cookies renovados para ele, o navegador continua mandando
+// o cookie antigo/expirado e cai num loop infinito de redirecionamento.
+function withRefreshedCookies(target: NextResponse, source: NextResponse): NextResponse {
+  source.cookies.getAll().forEach((cookie) => target.cookies.set(cookie));
+  return target;
 }
 
 export const config = {

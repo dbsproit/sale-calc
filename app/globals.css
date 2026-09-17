@@ -31,7 +31,8 @@ body {
 .brand { padding: 0 20px 24px; }
 .brand .name { font-size: 26px; font-weight: 700; }
 .brand .sub { font-size: 10px; font-weight: 700; color: #C9D5E3; letter-spacing: 1px; }
-.brand-logo { width: 100%; max-width: 168px; height: auto; display: block; }
+.brand-logo { width: 100%; max-width: 180px; height: auto; display: block; }
+.brand-logo-badge { background: #fff; border-radius: 6px; padding: 10px 14px; display: inline-block; }
 .nav-btn {
   display: block; width: 100%; text-align: left; background: none; border: none;
   color: #D8E2ED; font-size: 14px; padding: 12px 20px; cursor: pointer;
@@ -175,8 +176,8 @@ table.hist-table td { padding: 8px; border-bottom: 1px solid var(--border); }
   #printReport, #printReport * { visibility: visible; }
   #printReport { display: block; position: absolute; top: 0; left: 0; width: 100%; }
   .pr-header { border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 16px; }
-  .pr-header .pr-logo-strip { background: var(--navy); padding: 10px 16px; border-radius: 4px; margin-bottom: 10px; display: inline-block; }
-  .pr-header .pr-logo-strip img { height: 28px; display: block; }
+  .pr-header .pr-logo-strip { background: #fff; border: 1px solid var(--border); padding: 10px 16px; border-radius: 4px; margin-bottom: 10px; display: inline-block; }
+  .pr-header .pr-logo-strip img { height: 26px; display: block; }
   .pr-header .pr-brand { color: var(--accent); font-weight: 700; font-size: 13px; }
   .pr-header h1 { margin: 6px 0 2px; font-size: 24px; }
   .pr-header .pr-sub { color: var(--accent); font-size: 13px; }
