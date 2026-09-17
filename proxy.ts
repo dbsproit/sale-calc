@@ -56,5 +56,8 @@ function withRefreshedCookies(target: NextResponse, source: NextResponse): NextR
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|icon.png|favicon.ico).*)"],
+  // Além de _next/*, exclui qualquer arquivo estático (logo, ícones, etc.) -
+  // sem isso o proxy interceptava /logo.png e devolvia um redirect em vez da
+  // imagem, quebrando a logo em qualquer página sem sessão (ex: /login).
+  matcher: ["/((?!_next/static|_next/image|.*\\.(?:png|jpg|jpeg|gif|svg|webp|ico)$).*)"],
 };
