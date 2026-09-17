@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DBS Pricing Calculator
 
-## Getting Started
+App interno da DBS Building Services para calcular o preço a cobrar do cliente
+protegendo a margem-alvo. Next.js (App Router) + Supabase (banco de dados e
+login), publicado na Vercel.
 
-First, run the development server:
+O arquivo original single-file (localStorage, sem login) fica preservado em
+[`legacy/Calc.html`](legacy/Calc.html) como referência.
+
+## 1. Configurar o Supabase
+
+1. No seu projeto Supabase, abra **SQL Editor** e rode o conteúdo de
+   [`supabase/schema.sql`](supabase/schema.sql) inteiro (cria as tabelas, as
+   políticas de RLS e os dados padrão).
+2. Em **Authentication → Providers**, deixe só **Email** habilitado e
+   desative "Allow new users to sign up" (os usuários são criados manualmente
+   por um admin, não há tela de cadastro no app).
+3. Crie o primeiro usuário em **Authentication → Users → Add user** (email +
+   senha). O trigger do schema já cria o `profile` dele automaticamente com
+   `role = 'user'`.
+4. Torne esse usuário admin rodando no SQL Editor:
+   ```sql
+   update public.profiles set role = 'admin' where id = '<user-id-do-passo-3>';
+   ```
+   Usuários com `role = 'admin'` podem editar a Política de Preços e as
+   Regras de Serviço em Management; os demais só visualizam.
+5. Em **Project Settings → API**, copie a **Project URL** e a chave
+   **anon public**.
+
+## 2. Rodar localmente
 
 ```bash
+npm install
+cp .env.example .env.local   # cole a URL e a anon key do passo 5 acima
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abra [http://localhost:3000](http://localhost:3000) e entre com o usuário
+criado no passo 3.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 3. Publicar na Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. `git push` para `https://github.com/dbsproit/sale-calc.git`.
+2. Na Vercel, **Add New → Project**, importe esse repositório.
+3. Em **Environment Variables**, adicione `NEXT_PUBLIC_SUPABASE_URL` e
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY` com os mesmos valores do `.env.local`.
+4. Deploy.
 
-## Learn More
+## Estrutura
 
-To learn more about Next.js, take a look at the following resources:
+- `lib/pricing-engine.ts` — motor de cálculo (fórmulas de precificação),
+  portado do `Calc.html` original sem alterar o comportamento.
+- `lib/supabase/` — clients Supabase (browser/server) e tipos das tabelas.
+- `lib/dal.ts` — checagem de sessão/perfil usada nas páginas server-side.
+- `proxy.ts` — equivalente ao antigo `middleware.ts` no Next.js 16: mantém a
+  sessão do Supabase renovada e redireciona quem não está logado para
+  `/login`.
+- `app/(app)/` — páginas autenticadas: `calculator`, `history`, `dashboard`,
+  `management`.
+- `supabase/schema.sql` — schema completo (tabelas + RLS) para rodar no seu
+  projeto Supabase.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Migrar um `history.txt` antigo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Na página **History**, use o botão **Import legacy .txt** para importar um
+arquivo exportado pelo `Calc.html` antigo direto para o banco Supabase.

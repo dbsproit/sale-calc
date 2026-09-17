@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DBS Pricing Calculator</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAKT0lEQVR4nO2Za3hUxRnH35k5Zzeb3YRL7vd7QiAXIIQQQkiABxFqxEbRpnKttlKseMHHVqu2KLZ4eURbqNWitljlIYpFaAVSIYGEkAsJMSRAAoGQJRdyZXPb7J4zM/2wTJ6FElC/nA/s/9M5e2Zn/vObd+Z9zy5yC07hcAcLa21Aa7kAaG1Aa7kAaG1Aa7kAaG1Aa7kAaG1Aa7kAaG1Aa7kAaG1Aa7kAaG1Aa7kAaG1Aa7kAaG1Aa7kAaG1Aa93xAKSxHuTlLjnm4zVB7ejslvO/OjgbACBhUvS5119+ZoADBwTouvaKqrLLbR3WsqpatP9QyeSe3qsTMcaMMTYKmRBMKWXkqcdWHLkrO92TMsYwwuiGoWFoeFipb2iy7j1Q5Hfy1Jl4hBDnnCMAAOfrhVnpVSsfyrGnTksI8ff19tHJsm5wyDrUbG5tO1xc3r79n1+Gnb/YEi7Gvdk80Vj/C4QGB7RGhYd02mx2UlZVm8AYw2tXPXh0y6bn5t6Oamt7Z/vb7/3j3F8+3jXXGYIwX7b/07PJCXGTbtePXVHsf/rg09KXNm/NxhgzzjlCCHGMEdvy6q+PP7o8N1O0ZYyxa2MghBACALhq6b/61ItvnN6158DsscYYE4CzJImoqkql7Vs2HsvLXZyuUqpKhEgY4+u2EKWMAgAQggkAwDvvf3Lk+U3vZgnznHPk7TWhp75kj87kbjByDty5vXM/nHOOMcIYY7z6iRdLd+05MFsny3a7ouhee2H9kWd+uTLLZrfbAAD0Op3+xu8rqqrodbKeMc4WLvv56eOV3yZ+LwAIIY4Q4gAAIuQqCnaeT5gUHaOqVJUkIrW2d7Z//U3xOUIwCg8JMs7PnDkdwLEalDEqS5K8dMX6EwVFpTOE+bnpKTUH89+f6rxif97+2dHmllZECOFz01PcchZlpzl7Ka2sqV2Q+2gSQohHhAaZ60v2hDo/bza3mX/3+jZzV0+fYf6cmZZnH1+d7fy85tTZs+lLlt804sY8A8SKidULCvBtjwoPCQYA4MA5AMDOL79ueGnz1tHBchZll3/6183TCcYEgSPen167ghQUlY72mzQlziJWWJKIRCmjG998L3XYOuIOALD1w51QV/yvSyFB/gG9fZa+oWHrSHNL24DwZDK5W3fk7y3p7x+k1hEbVymFrw4U+n9b1zAbAKCwpAIamy6VREWEqLIkIQ+TETHOAAC+HwAhhBxhmjAputXgpg+glFGCHSFbUl5tkiSiSoSoKqXSvoNFaaUVNTWZs6YnUUYpAMC0pPgob68JPd09fV4AAHfPz/AgBJNh68hwV09vz9HjVU02uz1NJ8t2Mcn71zxNGWNtnd19EwYGh3wYY2HCT219Y9xjG16Ju5XnTz7fN+d28/oeABzbICV5yiAAAOOMyUSSLQOD/ZU19ZGqSiVKGSEEU4wxM7d2DGKMsdiX4zxMnoF+Po3dPX1ehGC6Y9feka3bP6s8f9Hs09XdO9EyMDgbY8zsiqITYzacb44U13qdziaecc6Rm143svLBeysmjPdk/n7e2NdromwyucueJpP+29MNfbv3/Xdc2YnayYqqyrIkKdc847GywG0BiP2fkjzZeO2ec875ydozTb19lmnilGeMY8458po4Xt/UbL5UUX3qck1dg1pde2Z8Y1Pz6IqJlOosxhjWybI9KMD3SmRYcFdsVNhgVEQodze44V17DngcPV6VLM4klVJp3pyZuvuWzJ91Yz+zZiTBYyuXQW19Y8PWD3d2iUgQi3gz3TILiLSl1+lstUd2dwcF+PnbFcVucNMbNr39QdFrWz7IFhlCtA8O9Gu/0tnj7byiN2qcp4clIiyoPXFSTHdaSiJPjI+ZEBUeEujpafKQJUkW7d7a9vcikQIZY9j5UN743Lqixx/JSzW6G4wAAIqqKpxzLkuSLNLgvoIj5WueeDHBOmIzONcj3xmAGHhSdMSFk4Wfj4alpX/Acs/Dv7p8oqZ+inOev7HwERKFyL13zyt/dHmuNDk2KjAowDcAwHGCK4pKCcE4Miw41HkyGGG8Zv1LlV/sK0iXJKI696mqVJoSF3V++bJ7WnMWZYdHhYeEXYPDOedcpVTVybLub5/sPrr+hT+OWbvcEoBY3TV59xVvfvnpqfu/KT7174KjqLisKupKV4+vCEuMERNRIBQXHX5hYVa6GWMM2z7aOYdSRor2fFSXlpKUINoUFJWeWLpi/QxxP2/OzJP529+KNbob3CllVJKIVN/QdD5tUV7EWHsYAMDgprdmzZ5Rt2HdKt2ctOnJnDuyFGOcDVtHrElZuUMdnd1+N53jWJ0CAIhBS8qrQ6bNWzbU1tE5un8JwZRzQI7973inSE6IO3vvouyORfMyfBMnx0TrZDly7bOvlFDKyDgPU39YSKAPpYyqVFX1Op3+1OlzQ7IkKZJEVEVV5cKSimnnL7ScnZo4aTRlBQf4+piMxkFKqfTT3CVVCCFgnIFECBSXVQc0Nl0KU1RVPnD4WOrh4gp7yX92NCbGx8RSyighmJiMBmOgv6/5BwEQB+C5Cy3hAI6IIJhQRVVlASciNMi8dPH8Cw/kLPRJSZ48GZzybXlVbd2O/H0ZAABREaGt/r7e8ZxzLoEkAQAcLDw2XlFVWVFVGQAgOiK0OSI8OJCLmpdzPjRstQ4ND3t7epj63/3Db64L5f2HSipzVz8VI+7tiqLr6OweSIyPAREFNrtis/QPuI81x9tmAQDH3iYYU0VVZRUcob4gM616dd5S2+IFmUlGd0PINWB8xGYfMbjpDZb+AcvaZ18dHXhqQlw3gKNMlSQicc555qyUvtio8GKCMQ8M8GUP3/+j2HEeJk9HJUkpITIpLKlsUlXq39tnmXiouLw6K31GkkqpSggmixfMSd32+m+LP99bYBqx2aR5GTN7sjNSM8TkOef8TGPTxWZza+xYc/tO7wLOeiDnruPr1jxkSk9NHq2tbXa7jWBCJIlIAADm1o625eue762oPpUgSuCtm18oXpN3X4Z4j7gG9v8OTEoZxRhhhBDq7O7tysxZZTe3dgRyzpEoo0U7hADd2AfnnDPGmXi/+PGqJysPHD6W+oMAiLRjMhqGHlx698knf7E8JCYyNHys9le6ejrz9xw888a2jxNE4cMYxwghXlP4Rcutvussxhg7VFx+csPLb3qdu9ASjjFm1z7HeblLjr31+w3xEyeMmygmLLaMSH8AAJ3dvV3Pb3qn8bPdX2eMlZ1uCUBM3uCmt6772U8qcu7K8maM84GhITtCCDDCiAOH4WGr0tzSNlJZUycfKT0R09nd6wPgOCRFceRpMg5sf/eV00aDQb7ZWAAAlFFu6R+wn264YCs8VuFVdqI2EeD61CquI8OCWx55OPfigsw0v/CwoEAPo7uJMc6uWvotTc3m9oKi49078vfGXm67Eniryd8SwJ2iO/4nMRcArQ1oLRcArQ1oLRcArQ1oLRcArQ1oLRcArQ1oLRcArQ1oLRcArQ1oLRcArQ1oLRcArQ1oLRcArQ1oLRcArQ1orf8B3v5EMFjVyQwAAAAASUVORK5CYII=">
+<style>
+  :root {
+    --navy: #081C33;
+    --navy2: #0D2947;
+    --accent: #1464E8;
+    --accent-hover: #0F55C7;
+    --app-bg: #F4F6F9;
+    --card-bg: #FFFFFF;
+    --text: #0E1726;
+    --muted: #667085;
+    --border: #D8DEE8;
+    --soft-blue: #EEF5FF;
+    --soft-gray: #F8FAFC;
+    --green: #1E7F3C;
+    --yellow: #B8860B;
+    --orange: #C05A00;
+    --red: #B00020;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background: var(--app-bg); color: var(--text);
+  }
+  .shell { display: flex; min-height: 100vh; }
+  .sidebar {
+    width: 220px; background: var(--navy); color: #fff; flex-shrink: 0;
+    display: flex; flex-direction: column; padding: 24px 0;
+  }
+  .brand { padding: 0 20px 24px; }
+  .brand .name { font-size: 26px; font-weight: 700; }
+  .brand .sub { font-size: 10px; font-weight: 700; color: #C9D5E3; letter-spacing: 1px; }
+  .brand-logo { width: 100%; max-width: 168px; height: auto; display: block; }
+  .nav-btn {
+    display: block; width: 100%; text-align: left; background: none; border: none;
+    color: #D8E2ED; font-size: 14px; padding: 12px 20px; cursor: pointer;
+    border-radius: 0; font-family: inherit;
+  }
+  .nav-btn:hover { background: var(--navy2); }
+  .nav-btn.active { background: var(--accent); color: #fff; font-weight: 600; }
+  .sidebar-footer { margin-top: auto; padding: 14px 20px; font-size: 11px; color: #9FB0C3; }
+  .sidebar-footer div:first-child { margin-bottom: 2px; }
+
+  .main { flex: 1; padding: 28px 32px; max-width: 1100px; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .top-price {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 18px; flex-wrap: wrap; gap: 16px;
+  }
+  .top-price .label { color: var(--accent); font-weight: 700; font-size: 12px; letter-spacing: .5px; }
+  .top-price .value { font-size: 30px; font-weight: 700; margin-top: 4px; }
+  .top-price .sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .live-box {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 16px; min-width: 220px;
+  }
+  .live-box .lb-title { color: var(--accent); font-weight: 700; font-size: 13px; }
+  .live-box .lb-sub { color: var(--muted); font-size: 11px; margin-top: 2px; }
+  .badge {
+    display: inline-block; margin-top: 8px; padding: 4px 10px; border-radius: 6px;
+    color: #fff; font-size: 12px; font-weight: 700;
+  }
+
+  .card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 20px; margin-bottom: 16px;
+  }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .section-header .icon {
+    background: var(--soft-blue); color: var(--accent); width: 28px; height: 28px;
+    border-radius: 6px; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .section-header .title { font-weight: 700; font-size: 15px; }
+  .section-header .subtitle { color: var(--muted); font-size: 12px; }
+
+  label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 5px; }
+  input[type=text], input[type=number], input[type=date], select {
+    width: 100%; padding: 9px 10px; border: 1px solid var(--border); border-radius: 6px;
+    font-size: 14px; font-family: inherit; background: #fff; color: var(--text);
+  }
+  input:focus, select:focus { outline: none; border-color: var(--accent); }
+  input.invalid { border-color: var(--red); background: #FFF0F1; }
+  .field-error { color: var(--red); font-size: 11px; font-weight: 700; min-height: 14px; margin-top: 3px; }
+  .hint { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }
+  .field { margin-bottom: 4px; }
+
+  .btn {
+    border: none; border-radius: 7px; padding: 10px 18px; font-size: 14px; font-weight: 700;
+    cursor: pointer; font-family: inherit;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-secondary { background: #fff; color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { background: var(--soft-gray); }
+  .btn-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+
+  table.labor-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.labor-table th { text-align: left; color: var(--muted); font-size: 11px; font-weight: 700; padding: 4px 6px; }
+  table.labor-table td { padding: 4px 6px; }
+  table.labor-table input, table.labor-table select { padding: 7px 8px; font-size: 13px; }
+
+  .note-box {
+    background: var(--soft-blue); border-radius: 8px; padding: 10px 14px;
+    color: #24568C; font-size: 13px; margin-top: 10px;
+  }
+
+  .steps { display: flex; align-items: center; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .step-item { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+  .step-circle {
+    width: 24px; height: 24px; border-radius: 50%; background: #E9EDF3; color: var(--muted);
+    display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700;
+  }
+  .step-circle.active { background: var(--accent); color: #fff; }
+  .step-circle.done { background: #D9F0E2; color: #127A43; }
+  .step-label { font-size: 13px; color: var(--muted); }
+  .step-label.active { color: var(--accent); font-weight: 700; }
+  .step-label.done { color: #127A43; }
+  .step-line { width: 28px; height: 1px; background: var(--border); }
+
+  .wizard-step { display: none; }
+  .wizard-step.active { display: block; }
+  .nav-row { display: flex; justify-content: space-between; margin-top: 16px; }
+
+  pre.breakdown {
+    background: var(--soft-gray); border-radius: 8px; padding: 16px; font-size: 13px;
+    font-family: "Cascadia Mono", Consolas, monospace; white-space: pre-wrap; line-height: 1.6;
+  }
+
+  .kpi-row { display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+  .kpi-box { background: var(--soft-gray); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; flex: 1; min-width: 160px; }
+  .kpi-box .kpi-label { color: var(--muted); font-size: 11px; font-weight: 700; }
+  .kpi-box .kpi-value { color: var(--accent); font-size: 22px; font-weight: 700; margin-top: 4px; }
+
+  .bars-col { flex: 1; min-width: 260px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+  .bar-label { width: 110px; flex-shrink: 0; }
+  .bar-track { flex: 1; background: #EEF1F5; border-radius: 4px; height: 20px; position: relative; }
+  .bar-fill { background: var(--accent); height: 100%; border-radius: 4px; }
+  .bar-value { width: 60px; text-align: right; color: var(--muted); font-size: 12px; }
+  .dash-cols { display: flex; gap: 24px; flex-wrap: wrap; }
+
+  table.hist-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  table.hist-table th { text-align: left; background: var(--soft-gray); padding: 8px; font-size: 11px; color: var(--muted); }
+  table.hist-table td { padding: 8px; border-bottom: 1px solid var(--border); }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .tab-btn { background: none; border: none; padding: 10px 16px; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; font-family: inherit; }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .subpage { display: none; }
+  .subpage.active { display: block; }
+
+  .status-pill { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .status-connected { background: #D9F0E2; color: #127A43; }
+  .status-disconnected { background: #FDEEEE; color: var(--red); }
+
+  .rule-line { color: #24568C; font-size: 12px; margin-top: 8px; }
+  .rule-total { font-weight: 700; margin-top: 4px; font-size: 13px; }
+
+  @media (max-width: 800px) {
+    .field-grid { grid-template-columns: 1fr; }
+    .shell { flex-direction: column; }
+    .sidebar { width: 100%; flex-direction: row; overflow-x: auto; padding: 10px; }
+    .brand, .sidebar-footer { display: none; }
+  }
+
+  /* ---- Printable report (used by the "Print / Save PDF" button) ---- */
+  #printReport { display: none; }
+  @media print {
+    body * { visibility: hidden; }
+    #printReport, #printReport * { visibility: visible; }
+    #printReport { display: block; position: absolute; top: 0; left: 0; width: 100%; }
+    .pr-header { border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 16px; }
+    .pr-header .pr-logo-strip { background: var(--navy); padding: 10px 16px; border-radius: 4px; margin-bottom: 10px; display: inline-block; }
+    .pr-header .pr-logo-strip img { height: 28px; display: block; }
+    .pr-header .pr-brand { color: var(--accent); font-weight: 700; font-size: 13px; }
+    .pr-header h1 { margin: 6px 0 2px; font-size: 24px; }
+    .pr-header .pr-sub { color: var(--accent); font-size: 13px; }
+    .pr-info { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 12px; }
+    .pr-info td { padding: 4px 6px; border-bottom: 1px solid var(--border); }
+    .pr-info td.pr-label { color: var(--muted); width: 110px; }
+    .pr-banner { background: var(--accent); color: #fff; padding: 14px 18px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .pr-banner .pr-banner-label { font-size: 11px; font-weight: 700; }
+    .pr-banner .pr-banner-value { font-size: 26px; font-weight: 700; }
+    .pr-subnote { color: var(--muted); font-size: 11px; margin-bottom: 16px; }
+    .pr-section-title { color: var(--accent); font-weight: 700; font-size: 13px; margin: 16px 0 6px; }
+    table.pr-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 4px; }
+    table.pr-table th { background: var(--accent); color: #fff; text-align: left; padding: 6px 8px; }
+    table.pr-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
+    table.pr-table tr.pr-total td { font-weight: 700; background: var(--soft-gray); }
+    .pr-result-band { padding: 10px 14px; border-radius: 6px; color: #fff; font-weight: 700; display: flex; justify-content: space-between; margin: 10px 0; }
+    .pr-notes { font-size: 12px; margin-top: 12px; }
+    .pr-notes li { margin-bottom: 4px; }
+    .pr-footer { color: var(--muted); font-size: 10px; margin-top: 24px; border-top: 1px solid var(--border); padding-top: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="sidebar">
+    <div class="brand">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASoAAABjCAMAAAAbxL0NAAAC91BMVEUAAAD///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8Y3nl4AAAA/HRSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHyAhIiMkJSYnKCkqKywtLi8wMTIzNDU2Nzg5Ojs8PT4/QEFCQ0RFRkdISUpLTE1OT1BRU1RVVldY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" alt="DBS Building Services" class="brand-logo">
+    </div>
+    <button class="nav-btn active" data-page="calculator">▦ Calculator</button>
+    <button class="nav-btn" data-page="history">◷ History</button>
+    <button class="nav-btn" data-page="dashboard">▥ Dashboard</button>
+    <button class="nav-btn" data-page="management">⚙ Management</button>
+    <div class="sidebar-footer">
+      <div>v1.0 (web edition)</div>
+      <div>© 2026 DBS Building Services</div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- ============ CALCULATOR PAGE ============ -->
+    <div class="page active" id="page-calculator">
+      <div class="top-price">
+        <div>
+          <div class="label">PRICE TO CHARGE THE CLIENT</div>
+          <div class="value" id="priceValue">Fill in the job and go to Review</div>
+          <div class="sub" id="priceSub"></div>
+        </div>
+        <div class="live-box">
+          <div class="lb-title">● Live preview</div>
+          <div class="lb-sub" id="liveStatus">Updates automatically</div>
+          <div id="badgeHost"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="steps" id="stepBar"></div>
+        <div id="wizardHost"></div>
+        <div class="nav-row">
+          <button class="btn btn-secondary" id="backBtn">‹ Back</button>
+          <button class="btn btn-primary" id="nextBtn">Next ›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ HISTORY PAGE ============ -->
+    <div class="page" id="page-history">
+      <h2>History</h2>
+      <div class="card">
+        <div class="section-header">
+          <div class="icon">◷</div>
+          <div>
+            <div class="title">Quote history (.txt file)</div>
+            <div class="subtitle" id="historyFileStatus">No file connected — using in-browser storage only</div>
+          </div>
+        </div>
+        <div class="btn-row" id="historyButtons"></div>
+        <div style="overflow-x:auto">
+          <table class="hist-table" id="historyTable"></table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ DASHBOARD PAGE ============ -->
+    <div class="page" id="page-dashboard">
+      <h2>Dashboard</h2>
+      <div class="card">
+        <div class="kpi-row" id="kpiRow"></div>
+        <div class="dash-cols">
+          <div class="bars-col">
+            <div class="section-header"><div class="title">Jobs by margin band</div></div>
+            <div id="bandBars"></div>
+          </div>
+          <div class="bars-col">
+            <div class="section-header"><div class="title">Top clients by revenue</div></div>
+            <div id="clientBars"></div>
+          </div>
+          <div class="bars-col">
+            <div class="section-header"><div class="title">Top salespeople by commission</div></div>
+            <div id="salesBars"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ MANAGEMENT PAGE ============ -->
+    <div class="page" id="page-management">
+      <h2>Pricing Management</h2>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="policy">Pricing Policy</button>
+        <button class="tab-btn" data-tab="people">Salespeople & Commission</button>
+        <button class="tab-btn" data-tab="services">Service Pricing Rules</button>
+        <button class="tab-btn" data-tab="team">Rate Card (Team)</button>
+      </div>
+      <div class="card subpage active" id="tab-policy"></div>
+      <div class="card subpage" id="tab-people"></div>
+      <div class="card subpage" id="tab-services"></div>
+      <div class="card subpage" id="tab-team"></div>
+    </div>
+
+  </div>
+</div>
+
+<input type="file" id="importHistoryInput" accept=".txt" style="display:none">
+<div id="printReport"></div>
+
+<script>
+/* =============================================================================
+   DBS Pricing Calculator - Web Edition
+   Same engine/formulas as the desktop app (v3.0). Runs 100% in the browser,
+   no install, no Python, no .exe. History is stored as a real .txt file on
+   disk (via the File System Access API in Chrome/Edge), with an
+   Export/Import fallback for browsers that don't support it (Firefox/Safari).
+============================================================================= */
+(function () {
+"use strict";
+
+// ============================================================================
+// ENGINE (same formulas as the Python/Excel versions)
+// ============================================================================
+const PAY_HOURLY = "Hourly";
+const PAY_FLAT = "Flat";
+const MODE_HOURLY = "Hourly (time & materials)";
+const MODE_UNIT = "Per unit (m2 / window / room)";
+const ROLE_OPTIONS = ["Technician", "Helper"];
+const N_TECHS = 4;
+
+const SERVICE_LABOR_SHARE = {
+  "Grout / Tile / Steam": 0.38, "Carpet Cleaning": 0.35, "Floor Stripping & Waxing": 0.32,
+  "Floor Scrub / Auto-Scrub": 0.35, "Window Cleaning": 0.40, "Pressure Washing": 0.32,
+  "Deep Cleaning": 0.40, "Upholstery / Chair": 0.38, "Grout Restoration": 0.40,
+  "Specialty / Other": 0.37,
+};
+
+const DEFAULT_SERVICE_RULES = {
+  "Grout / Tile / Steam": { labor: 38, chemicals: 4, machine: 4, pads: 2, water: 1, vehicle: 3, maintenance: 2, depreciation: 2, admin: 4, commission: 10, profit: 30 },
+  "Carpet Cleaning": { labor: 35, chemicals: 5, machine: 5, pads: 1, water: 1, vehicle: 3, maintenance: 2, depreciation: 3, admin: 5, commission: 10, profit: 30 },
+  "Floor Stripping & Waxing": { labor: 32, chemicals: 8, machine: 4, pads: 3, water: 1, vehicle: 3, maintenance: 2, depreciation: 3, admin: 4, commission: 10, profit: 30 },
+  "Floor Scrub / Auto-Scrub": { labor: 35, chemicals: 5, machine: 5, pads: 2, water: 1, vehicle: 3, maintenance: 2, depreciation: 2, admin: 5, commission: 10, profit: 30 },
+  "Window Cleaning": { labor: 40, chemicals: 3, machine: 2, pads: 1, water: 1, vehicle: 4, maintenance: 2, depreciation: 2, admin: 5, commission: 10, profit: 30 },
+  "Pressure Washing": { labor: 32, chemicals: 3, machine: 7, pads: 0, water: 4, vehicle: 4, maintenance: 3, depreciation: 4, admin: 3, commission: 10, profit: 30 },
+  "Deep Cleaning": { labor: 40, chemicals: 6, machine: 2, pads: 1, water: 1, vehicle: 3, maintenance: 1, depreciation: 1, admin: 5, commission: 10, profit: 30 },
+  "Upholstery / Chair": { labor: 38, chemicals: 5, machine: 4, pads: 1, water: 1, vehicle: 3, maintenance: 2, depreciation: 2, admin: 4, commission: 10, profit: 30 },
+  "Grout Restoration": { labor: 40, chemicals: 5, machine: 3, pads: 2, water: 1, vehicle: 3, maintenance: 2, depreciation: 2, admin: 2, commission: 10, profit: 30 },
+  "Specialty / Other": { labor: 37, chemicals: 5, machine: 4, pads: 2, water: 1, vehicle: 3, maintenance: 2, depreciation: 2, admin: 4, commission: 10, profit: 30 },
+};
+
+function round2(x) { return Math.round((x + Number.EPSILON) * 100) / 100; }
+function round1(x) { return Math.round((x + Number.EPSILON) * 10) / 10; }
+function round4(x) { return Math.round((x + Number.EPSILON) * 10000) / 10000; }
+
+function technicianCost(t) {
+  if (t.payType === PAY_FLAT) return round2(t.flatAmount || 0);
+  const billed = (t.actualHours || 0) > 0 ? t.actualHours : (t.estHours || 0);
+  const rate = t.rate || 0;
+  if (billed <= 0 || rate <= 0) return 0;
+  return round2(billed * rate);
+}
+function laborCost(techs) { return round2(techs.reduce((s, t) => s + technicianCost(t), 0)); }
+function laborHoursEst(techs) { return round2(techs.reduce((s, t) => s + (t.estHours || 0), 0)); }
+function laborHoursActual(techs) {
+  return round2(techs.filter(t => (t.actualHours || 0) > 0).reduce((s, t) => s + t.actualHours, 0));
+}
+function hasActualHours(techs) { return techs.some(t => (t.actualHours || 0) > 0); }
+function efficiency(techs) {
+  const actual = laborHoursActual(techs);
+  if (actual <= 0) return null;
+  const est = laborHoursEst(techs);
+  if (est <= 0) return null;
+  return round1((est / actual) * 100);
+}
+function directCost(inp) {
+  return round2(laborCost(inp.technicians) + inp.chemicals + inp.machine + inp.consumables + inp.water + inp.vehicle);
+}
+function laborShareActual(inp) {
+  const dc = directCost(inp);
+  if (dc <= 0) return null;
+  return round4(laborCost(inp.technicians) / dc);
+}
+function classify(margin) {
+  if (margin >= 0.30) return { label: "GREEN - Profitable", color: "#1E7F3C", action: "At or above target. No action required." };
+  if (margin >= 0.25) return { label: "YELLOW - Watch", color: "#B8860B", action: "Below target. Manager reviews why." };
+  if (margin >= 0.15) return { label: "ORANGE - Problem", color: "#C05A00", action: "Management approval before repeating this price." };
+  if (margin >= 0.0) return { label: "RED - Serious", color: "#B00020", action: "Root-cause required before quoting like this again." };
+  return { label: "RED - LOSS", color: "#B00020", action: "DBS loses money at this price. Do not accept." };
+}
+function evaluatePrice(price, dc, overhead, commission) {
+  const overheadAmt = round2(price * overhead);
+  const commissionAmt = round2(price * commission);
+  const totalCost = round2(dc + overheadAmt + commissionAmt);
+  const profitAmt = round2(price - totalCost);
+  const margin = price ? profitAmt / price : 0;
+  const c = classify(margin);
+  return { price: round2(price), overheadAmt, commissionAmt, totalCost, profitAmt, margin, label: c.label, color: c.color, action: c.action };
+}
+function validateInputs(inp) {
+  const errors = [];
+  const numericFields = [
+    ["Chemicals", inp.chemicals], ["Machine / equipment", inp.machine], ["Consumables", inp.consumables],
+    ["Water", inp.water], ["Vehicle / travel", inp.vehicle], ["Minimum charge", inp.minCharge],
+    ["Unit quantity", inp.unitQuantity],
+  ];
+  for (const [label, value] of numericFields) if (value < 0) errors.push(`'${label}' cannot be negative.`);
+
+  inp.technicians.forEach((t, i) => {
+    const idx = i + 1;
+    const isEmpty = (t.estHours <= 0 && t.actualHours <= 0 && t.rate <= 0 && t.flatAmount <= 0 && !(t.name || "").trim());
+    if (isEmpty) return;
+    const hasNeg = t.estHours < 0 || t.actualHours < 0 || t.rate < 0 || t.flatAmount < 0;
+    if (hasNeg) { errors.push(`Person #${idx}: hours, rate and flat amount cannot be negative.`); return; }
+    if (t.payType === PAY_FLAT) {
+      if (t.flatAmount <= 0) errors.push(`Person #${idx}: 'Flat' pay selected but no flat amount was entered.`);
+    } else {
+      if (t.rate > 0 && t.estHours <= 0 && t.actualHours <= 0) errors.push(`Person #${idx}: rate ($/h) was entered but no hours were entered.`);
+      if ((t.estHours > 0 || t.actualHours > 0) && t.rate <= 0) errors.push(`Person #${idx}: hours were entered but no rate ($/h) was entered.`);
+    }
+  });
+
+  if (inp.overhead < 0 || inp.commission < 0 || inp.targetProfit < 0) errors.push("Overhead, Commission and Target Profit cannot be negative.");
+  if (inp.overhead + inp.commission + inp.targetProfit >= 1.0) errors.push("Overhead + Commission + Target Profit add up to 100% or more - impossible to calculate a price. Reduce the percentages.");
+  if (inp.tax < 0 || inp.tax > 1) errors.push("Tax (%) must be between 0% and 100%.");
+  if (inp.discount < 0 || inp.discount > 1) errors.push("Discount (%) must be between 0% and 100%.");
+  if (inp.pricingMode === MODE_UNIT && inp.unitQuantity <= 0) errors.push("'Per unit' mode selected: enter a quantity of units (m2 / windows / rooms) greater than zero.");
+  if (directCost(inp) <= 0) errors.push("Direct cost is zero. Enter at least labor (hours + rate, or a flat amount, for 1 person) or some materials cost.");
+  return errors;
+}
+function calculate(inp) {
+  const errors = validateInputs(inp);
+  if (errors.length) { const err = new Error(errors.join("\n")); err.isValidation = true; err.errors = errors; throw err; }
+  const warnings = [];
+  const dc = directCost(inp);
+  const divisor = 1.0 - inp.overhead - inp.commission - inp.targetProfit;
+  if (divisor <= 0) throw new Error("Overhead + Commission + Target Profit add up to 100% or more - impossible to calculate a price. Reduce the percentages.");
+  const recommended = dc > 0 ? round2(dc / divisor) : 0.0;
+  const belowMin = recommended < inp.minCharge;
+  const dbsPrice = Math.max(recommended, inp.minCharge);
+  if (belowMin && dc > 0) warnings.push(`Recommended price ($${recommended.toFixed(2)}) is below the minimum charge ($${inp.minCharge.toFixed(2)}). Minimum charge was applied instead.`);
+  const ev = evaluatePrice(dbsPrice, dc, inp.overhead, inp.commission);
+  const discountAmt = round2(dbsPrice * inp.discount);
+  const priceAfterDiscount = round2(dbsPrice - discountAmt);
+  const taxAmt = round2(priceAfterDiscount * inp.tax);
+  const clientTotal = round2(priceAfterDiscount + taxAmt);
+  let pricePerUnit = null;
+  if (inp.pricingMode === MODE_UNIT && inp.unitQuantity > 0) pricePerUnit = round2(clientTotal / inp.unitQuantity);
+  if (hasActualHours(inp.technicians)) {
+    const eff = efficiency(inp.technicians);
+    if (eff !== null) {
+      if (eff < 85) warnings.push(`Labor efficiency ${eff.toFixed(1)}% (actual hours ran well above the estimate). Review the estimate used for this category.`);
+      else if (eff > 130) warnings.push(`Labor efficiency ${eff.toFixed(1)}% (finished well faster than estimated). Consider revising the estimate downward.`);
+    }
+  }
+  const benchmark = SERVICE_LABOR_SHARE[inp.service];
+  const actualShare = laborShareActual(inp);
+  if (benchmark !== undefined && actualShare !== null) {
+    const diff = Math.abs(actualShare - benchmark);
+    if (diff >= 0.15) warnings.push(`Labor share for this job (${Math.round(actualShare * 100)}%) is quite different from the typical value for '${inp.service}' (${Math.round(benchmark * 100)}%). Double-check the hours and costs entered.`);
+  }
+  let proposed = null;
+  if (inp.proposedPrice !== null && inp.proposedPrice !== undefined && inp.proposedPrice > 0) {
+    proposed = evaluatePrice(inp.proposedPrice, dc, inp.overhead, inp.commission);
+    if (proposed.margin < 0) warnings.push(`The proposed price ($${inp.proposedPrice.toFixed(2)}) results in a LOSS of $${Math.abs(proposed.profitAmt).toFixed(2)}.`);
+    else if (proposed.margin < 0.25) warnings.push(`The proposed price ($${inp.proposedPrice.toFixed(2)}) is below 25% - requires management approval.`);
+  }
+  return {
+    inputs: inp, directCost: dc, divisor: round4(divisor), recommendedPrice: recommended, belowMinimum: belowMin,
+    dbsPrice: ev.price, discountAmt, priceAfterDiscount, taxAmt, clientTotal, pricePerUnit,
+    overheadAmt: ev.overheadAmt, commissionAmt: ev.commissionAmt, totalCost: ev.totalCost, profitAmt: ev.profitAmt,
+    margin: ev.margin, resultLabel: ev.label, resultColor: ev.color, resultAction: ev.action, proposed, warnings,
+    laborCostTotal: laborCost(inp.technicians), laborHoursEstTotal: laborHoursEst(inp.technicians),
+    laborHoursActualTotal: laborHoursActual(inp.technicians), efficiencyPct: efficiency(inp.technicians),
+  };
+}
+
+// ============================================================================
+// PERSISTENCE: settings + team (localStorage) and history (.txt file)
+// ============================================================================
+const LS_SETTINGS = "dbs_settings_v1";
+const LS_TEAM = "dbs_team_v1";
+const LS_HISTORY_CACHE = "dbs_history_cache_v1";
+
+const DEFAULT_SETTINGS = {
+  overheadPct: 12, defaultCommissionPct: 10, targetProfitPct: 30,
+  minimumCharge: 350, taxPct: 0, discountPct: 0,
+  salespeople: [], serviceRules: JSON.parse(JSON.stringify(DEFAULT_SERVICE_RULES)),
+};
+
+function loadSettings() {
+  try {
+    const raw = localStorage.getItem(LS_SETTINGS);
+    if (!raw) return JSON.parse(JSON.stringify(DEFAULT_SETTINGS));
+    const saved = JSON.parse(raw);
+    const merged = Object.assign({}, DEFAULT_SETTINGS, saved);
+    merged.serviceRules = Object.assign({}, DEFAULT_SERVICE_RULES, saved.serviceRules || {});
+    merged.salespeople = Array.isArray(saved.salespeople) ? saved.salespeople : [];
+    return merged;
+  } catch (e) { return JSON.parse(JSON.stringify(DEFAULT_SETTINGS)); }
+}
+function saveSettings(s) { localStorage.setItem(LS_SETTINGS, JSON.stringify(s)); }
+
+function loadTeam() {
+  try { return JSON.parse(localStorage.getItem(LS_TEAM) || "[]"); } catch (e) { return []; }
+}
+function saveTeam(list) { localStorage.setItem(LS_TEAM, JSON.stringify(list)); }
+function upsertTeamMember(name, role, rate) {
+  name = (name || "").trim();
+  if (!name || !rate || rate <= 0) return;
+  const list = loadTeam();
+  const existing = list.find(m => m.name.trim().toLowerCase() === name.toLowerCase());
+  if (existing) { existing.role = role; existing.rate = rate; } else { list.push({ name, role, rate }); }
+  saveTeam(list);
+}
+function getTeamRate(name) {
+  name = (name || "").trim().toLowerCase();
+  if (!name) return null;
+  return loadTeam().find(m => m.name.trim().toLowerCase() === name) || null;
+}
+
+const HISTORY_HEADERS = [
+  "timestamp", "client", "location", "invoice", "service_date", "service", "pricing_mode",
+  "labor_cost", "direct_cost", "dbs_price", "discount_pct", "discount_amt", "tax_pct", "tax_amt",
+  "client_total", "price_per_unit", "overhead_pct", "commission_pct", "commission_amt",
+  "target_profit_pct", "profit_amt", "margin_pct", "result_label", "salesperson", "efficiency_pct",
+];
+
+function rowToLine(row) { return HISTORY_HEADERS.map(h => String(row[h] ?? "")).join("|"); }
+function lineToRow(line) {
+  const parts = line.split("|");
+  const row = {};
+  HISTORY_HEADERS.forEach((h, i) => { row[h] = parts[i] !== undefined ? parts[i] : ""; });
+  return row;
+}
+function historyToText(rows) { return [HISTORY_HEADERS.join("|"), ...rows.map(rowToLine)].join("\n") + "\n"; }
+function textToHistory(text) {
+  const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+  if (!lines.length) return [];
+  return lines.slice(1).map(lineToRow); // skip header
+}
+
+function loadHistoryCache() {
+  try { return JSON.parse(localStorage.getItem(LS_HISTORY_CACHE) || "[]"); } catch (e) { return []; }
+}
+function saveHistoryCache(rows) { localStorage.setItem(LS_HISTORY_CACHE, JSON.stringify(rows)); }
+
+// ============================================================================
+// APPLICATION STATE
+// ============================================================================
+const App = {
+  settings: loadSettings(),
+  history: loadHistoryCache(),
+  fileHandle: null,
+  form: {
+    client: "", location: "", invoice: "", date: "", salesperson: "",
+    service: "Grout / Tile / Steam", pricingMode: MODE_HOURLY, unitLabel: "m2", unitQuantity: 0,
+    technicians: Array.from({ length: N_TECHS }, () => ({
+      name: "", role: "Technician", payType: PAY_HOURLY, estHours: 0, actualHours: 0, rate: 0, flatAmount: 0,
+    })),
+    chemicals: 0, machine: 0, consumables: 0, water: 0, vehicle: 0,
+    overhead: 12, commission: 10, targetProfit: 30, minCharge: 350, discount: 0, tax: 0, proposedPrice: null,
+  },
+  step: 0,
+  lastResult: null,
+};
+
+function collectInputs() {
+  const f = App.form;
+  return {
+    service: f.service, pricingMode: f.pricingMode, unitLabel: f.unitLabel || "unit",
+    unitQuantity: Number(f.unitQuantity) || 0,
+    technicians: f.technicians.map(t => ({
+      name: t.name, role: t.role, payType: t.payType,
+      estHours: Number(t.estHours) || 0, actualHours: Number(t.actualHours) || 0,
+      rate: Number(t.rate) || 0, flatAmount: Number(t.flatAmount) || 0,
+    })),
+    chemicals: Number(f.chemicals) || 0, machine: Number(f.machine) || 0,
+    consumables: Number(f.consumables) || 0, water: Number(f.water) || 0, vehicle: Number(f.vehicle) || 0,
+    overhead: (Number(f.overhead) || 0) / 100, commission: (Number(f.commission) || 0) / 100,
+    targetProfit: (Number(f.targetProfit) || 0) / 100, minCharge: Number(f.minCharge) || 0,
+    discount: (Number(f.discount) || 0) / 100, tax: (Number(f.tax) || 0) / 100,
+    salesperson: f.salesperson, proposedPrice: f.proposedPrice ? Number(f.proposedPrice) : null,
+    client: f.client, location: f.location, invoice: f.invoice, date: f.date,
+  };
+}
+
+function money(v) { return v < 0 ? `-$${Math.abs(v).toFixed(2)}` : `$${v.toFixed(2)}`; }
+function pct(v) { return `${(v * 100).toFixed(1)}%`; }
+
+// expose for tests / debugging
+window.DBS = {
+  App, calculate, validateInputs, collectInputs, historyToText, textToHistory,
+  rowToLine, lineToRow, loadSettings, saveSettings, loadTeam, saveTeam, getTeamRate,
+  upsertTeamMember, SERVICE_LABOR_SHARE, DEFAULT_SERVICE_RULES, PAY_HOURLY, PAY_FLAT,
+  MODE_HOURLY, MODE_UNIT, ROLE_OPTIONS, N_TECHS, technicianCost, laborCost, directCost,
+};
+
+})();
+
+/* =============================================================================
+   DBS Pricing Calculator - Web Edition - UI layer
+   Depends on app_engine.js being loaded first (exposes window.DBS)
+============================================================================= */
+(function () {
+"use strict";
+const DBS = window.DBS;
+const { App, calculate, collectInputs, money, pctFmt } = (function () {
+  return {
+    App: DBS.App,
+    calculate: DBS.calculate,
+    collectInputs: DBS.collectInputs,
+    money: (v) => (v < 0 ? `-$${Math.abs(v).toFixed(2)}` : `$${v.toFixed(2)}`),
+    pctFmt: (v) => `${(v * 100).toFixed(1)}%`,
+  };
+})();
+
+const STEP_TITLES = ["Job & Mode", "Labor", "Materials", "Commercial", "Review"];
+const errorsByField = {};
+
+// ------------------------------------------------------------------
+// Navigation (sidebar pages)
+// ------------------------------------------------------------------
+document.querySelectorAll(".nav-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById("page-" + btn.dataset.page).classList.add("active");
+    if (btn.dataset.page === "history") renderHistoryPage();
+    if (btn.dataset.page === "dashboard") renderDashboardPage();
+    if (btn.dataset.page === "management") renderManagementPage();
+  });
+});
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll(".subpage").forEach(p => p.classList.remove("active"));
+    document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+  });
+});
+
+// ------------------------------------------------------------------
+// Step bar
+// ------------------------------------------------------------------
+function buildStepBar() {
+  const bar = document.getElementById("stepBar");
+  bar.innerHTML = "";
+  STEP_TITLES.forEach((title, i) => {
+    const item = document.createElement("div");
+    item.className = "step-item";
+    item.innerHTML = `<div class="step-circle" data-idx="${i}">${i + 1}</div><div class="step-label" data-idx="${i}">${title}</div>`;
+    item.addEventListener("click", () => showStep(i));
+    bar.appendChild(item);
+    if (i < STEP_TITLES.length - 1) {
+      const line = document.createElement("div");
+      line.className = "step-line";
+      bar.appendChild(line);
+    }
+  });
+}
+
+function showStep(i) {
+  i = Math.max(0, Math.min(STEP_TITLES.length - 1, i));
+  App.step = i;
+  document.querySelectorAll(".wizard-step").forEach((el, idx) => {
+    el.classList.toggle("active", idx === i);
+  });
+  document.querySelectorAll(".step-circle").forEach((el) => {
+    const idx = Number(el.dataset.idx);
+    el.classList.remove("active", "done");
+    if (idx === i) el.classList.add("active");
+    else if (idx < i) el.classList.add("done");
+  });
+  document.querySelectorAll(".step-label").forEach((el) => {
+    const idx = Number(el.dataset.idx);
+    el.classList.remove("active", "done");
+    if (idx === i) el.classList.add("active");
+    else if (idx < i) el.classList.add("done");
+  });
+  document.getElementById("backBtn").disabled = i === 0;
+  document.getElementById("nextBtn").style.display = i === STEP_TITLES.length - 1 ? "none" : "inline-block";
+}
+
+document.getElementById("backBtn").addEventListener("click", () => showStep(App.step - 1));
+document.getElementById("nextBtn").addEventListener("click", () => showStep(App.step + 1));
+
+// ------------------------------------------------------------------
+// Wizard content
+// ------------------------------------------------------------------
+function escapeHtml(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function fieldHTML(label, id, type, value, hint, listId) {
+  return `
+    <div class="field">
+      <label for="${id}">${label}</label>
+      <input type="${type}" id="${id}" value="${value ?? ""}" ${listId ? `list="${listId}"` : ""}>
+      <div class="field-error" id="${id}_err"></div>
+      ${hint ? `<div class="hint">${hint}</div>` : ""}
+    </div>`;
+}
+
+function buildWizard() {
+  const host = document.getElementById("wizardHost");
+  const serviceOptions = Object.keys(DBS.SERVICE_LABOR_SHARE)
+    .map(s => `<option value="${s}" ${s === App.form.service ? "selected" : ""}>${s}</option>`).join("");
+
+  host.innerHTML = `
+    <!-- STEP 1: Job & Mode -->
+    <div class="wizard-step active" data-step="0">
+      <div class="section-header"><div class="icon">▤</div><div><div class="title">Job information</div></div></div>
+      <div class="field-grid">
+        ${fieldHTML("Client", "f_client", "text", App.form.client, null, "clientNamesList")}
+        ${fieldHTML("Salesperson", "f_salesperson", "text", App.form.salesperson, "used for the real commission", "salespersonNamesList")}
+        ${fieldHTML("Location", "f_location", "text", App.form.location)}
+        <div class="field">
+          <label>Service category</label>
+          <select id="f_service">${serviceOptions}</select>
+          <div class="hint" id="laborShareHint"></div>
+        </div>
+        ${fieldHTML("Invoice #", "f_invoice", "text", App.form.invoice)}
+        ${fieldHTML("Service date", "f_date", "date", App.form.date || new Date().toISOString().slice(0, 10))}
+      </div>
+      <div class="note-box" id="benchmarkNote"></div>
+
+      <div class="section-header" style="margin-top:20px"><div class="icon">$</div><div><div class="title">Pricing mode</div></div></div>
+      <div class="field-grid">
+        <div class="field">
+          <label><input type="radio" name="pricingMode" value="${DBS.MODE_HOURLY}" checked> Hourly (time & materials)</label>
+        </div>
+        <div class="field">
+          <label><input type="radio" name="pricingMode" value="${DBS.MODE_UNIT}"> Per unit (m2 / window / room)</label>
+        </div>
+      </div>
+      <div class="field-grid" id="unitRow" style="display:none">
+        ${fieldHTML("Unit label", "f_unitLabel", "text", App.form.unitLabel)}
+        ${fieldHTML("Quantity", "f_unitQuantity", "number", App.form.unitQuantity)}
+      </div>
+      <div class="note-box">Cost is still built bottom-up from labor + materials. Per-unit mode only changes how the final price is quoted.</div>
+    </div>
+
+    <!-- STEP 2: Labor -->
+    <div class="wizard-step" data-step="1">
+      <div class="section-header"><div class="icon">♟</div><div><div class="title">Labor</div><div class="subtitle">Up to ${DBS.N_TECHS} people</div></div></div>
+      <div style="overflow-x:auto">
+        <table class="labor-table" id="laborTable">
+          <thead><tr><th>Name</th><th>Role</th><th>Pay type</th><th>Est. h</th><th>Actual h</th><th>Rate $/h</th><th>Flat $</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="note-box">Leave Actual h blank while quoting. For Flat pay, hours are optional and used only for efficiency tracking.</div>
+    </div>
+
+    <!-- STEP 3: Materials -->
+    <div class="wizard-step" data-step="2">
+      <div class="section-header"><div class="icon">▦</div><div><div class="title">Materials & equipment</div><div class="subtitle">Estimated direct job costs</div></div></div>
+      <div class="field-grid">
+        ${fieldHTML("Chemicals", "f_chemicals", "number", App.form.chemicals)}
+        ${fieldHTML("Machine / equipment", "f_machine", "number", App.form.machine)}
+        ${fieldHTML("Consumables (pads/brushes)", "f_consumables", "number", App.form.consumables)}
+        ${fieldHTML("Water", "f_water", "number", App.form.water)}
+        ${fieldHTML("Vehicle / travel", "f_vehicle", "number", App.form.vehicle)}
+      </div>
+    </div>
+
+    <!-- STEP 4: Commercial -->
+    <div class="wizard-step" data-step="3">
+      <div class="section-header"><div class="icon">%</div><div><div class="title">Commercial parameters</div><div class="subtitle">DBS policy defaults</div></div></div>
+      <div class="field-grid">
+        ${fieldHTML("Overhead %", "f_overhead", "number", App.form.overhead, "admin, supervision, depreciation")}
+        ${fieldHTML("Commission %", "f_commission", "number", App.form.commission)}
+        ${fieldHTML("Target profit %", "f_targetProfit", "number", App.form.targetProfit)}
+        ${fieldHTML("Minimum charge $", "f_minCharge", "number", App.form.minCharge)}
+        ${fieldHTML("Discount %", "f_discount", "number", App.form.discount)}
+        ${fieldHTML("Tax %", "f_tax", "number", App.form.tax)}
+        ${fieldHTML("Proposed price $ (optional)", "f_proposedPrice", "number", App.form.proposedPrice ?? "", "check a quote / client budget")}
+      </div>
+    </div>
+
+    <!-- STEP 5: Review -->
+    <div class="wizard-step" data-step="4">
+      <div class="btn-row">
+        <button class="btn btn-primary" id="calcBtn">Calculate</button>
+        <button class="btn btn-secondary" id="pdfBtn">Print / Save PDF</button>
+        <button class="btn btn-secondary" id="saveHistBtn">Save to history</button>
+      </div>
+      <div class="section-header"><div class="icon">✓</div><div><div class="title">Pricing breakdown</div></div></div>
+      <pre class="breakdown" id="breakdownText">Click Calculate to see the full breakdown.</pre>
+    </div>
+  `;
+
+  buildLaborRows();
+  wireFormEvents();
+  onServiceChange();
+  onModeChange();
+}
+
+function ensureDatalist(id) {
+  if (!document.getElementById(id)) {
+    const dl = document.createElement("datalist");
+    dl.id = id;
+    document.body.appendChild(dl);
+  }
+  return document.getElementById(id);
+}
+
+function refreshNameDatalists() {
+  // Client names: every distinct client that appears in saved history.
+  const clientNames = Array.from(new Set(App.history.map(r => (r.client || "").trim()).filter(Boolean))).sort();
+  ensureDatalist("clientNamesList").innerHTML = clientNames.map(n => `<option value="${n}">`).join("");
+
+  // Salesperson names: configured salespeople (Management) + anyone seen in history.
+  const configured = App.settings.salespeople.map(p => p.name);
+  const fromHistory = App.history.map(r => (r.salesperson || "").trim()).filter(Boolean);
+  const salesNames = Array.from(new Set([...configured, ...fromHistory])).sort();
+  ensureDatalist("salespersonNamesList").innerHTML = salesNames.map(n => `<option value="${n}">`).join("");
+}
+
+function buildLaborRows() {
+  const tbody = document.querySelector("#laborTable tbody");
+  tbody.innerHTML = "";
+  const team = DBS.loadTeam();
+  const teamNames = team.map(m => m.name);
+  ensureDatalist("teamNamesList").innerHTML = teamNames.map(n => `<option value="${n}">`).join("");
+  for (let i = 0; i < DBS.N_TECHS; i++) {
+    const t = App.form.technicians[i];
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><input type="text" list="teamNamesList" id="tech${i}_name" value="${t.name}" style="width:120px"></td>
+      <td><select id="tech${i}_role">${DBS.ROLE_OPTIONS.map(r => `<option ${r === t.role ? "selected" : ""}>${r}</option>`).join("")}</select></td>
+      <td><select id="tech${i}_pay"><option ${t.payType === DBS.PAY_HOURLY ? "selected" : ""}>${DBS.PAY_HOURLY}</option><option ${t.payType === DBS.PAY_FLAT ? "selected" : ""}>${DBS.PAY_FLAT}</option></select></td>
+      <td><input type="number" id="tech${i}_est" value="${t.estHours || ""}" style="width:64px"></td>
+      <td><input type="number" id="tech${i}_actual" value="${t.actualHours || ""}" style="width:64px"></td>
+      <td><input type="number" id="tech${i}_rate" value="${t.rate || ""}" style="width:70px"></td>
+      <td><input type="number" id="tech${i}_flat" value="${t.flatAmount || ""}" style="width:70px"></td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  for (let i = 0; i < DBS.N_TECHS; i++) {
+    ["name", "role", "pay", "est", "actual", "rate", "flat"].forEach(suffix => {
+      const el = document.getElementById(`tech${i}_${suffix}`);
+      el.addEventListener("input", () => onTechChange(i));
+      el.addEventListener("change", () => onTechChange(i));
+    });
+    document.getElementById(`tech${i}_name`).addEventListener("blur", () => autofillTech(i));
+  }
+}
+
+function onTechChange(i) {
+  const t = App.form.technicians[i];
+  t.name = document.getElementById(`tech${i}_name`).value;
+  t.role = document.getElementById(`tech${i}_role`).value;
+  t.payType = document.getElementById(`tech${i}_pay`).value;
+  t.estHours = Number(document.getElementById(`tech${i}_est`).value) || 0;
+  t.actualHours = Number(document.getElementById(`tech${i}_actual`).value) || 0;
+  t.rate = Number(document.getElementById(`tech${i}_rate`).value) || 0;
+  t.flatAmount = Number(document.getElementById(`tech${i}_flat`).value) || 0;
+  softRecalc();
+}
+
+function autofillTech(i) {
+  const t = App.form.technicians[i];
+  const info = DBS.getTeamRate(t.name);
+  if (!info) return;
+  if (!t.role) { t.role = info.role; document.getElementById(`tech${i}_role`).value = info.role; }
+  if (!t.rate) {
+    t.rate = info.rate;
+    document.getElementById(`tech${i}_rate`).value = info.rate;
+    softRecalc();
+  }
+}
+
+const NUMERIC_FIELD_KEYS = new Set([
+  "unitQuantity", "chemicals", "machine", "consumables", "water", "vehicle",
+  "overhead", "commission", "targetProfit", "minCharge", "discount", "tax", "proposedPrice",
+]);
+
+function wireFormEvents() {
+  const simpleFields = [
+    ["f_client", "client"], ["f_salesperson", "salesperson"], ["f_location", "location"],
+    ["f_invoice", "invoice"], ["f_date", "date"], ["f_unitLabel", "unitLabel"],
+    ["f_unitQuantity", "unitQuantity"], ["f_chemicals", "chemicals"], ["f_machine", "machine"],
+    ["f_consumables", "consumables"], ["f_water", "water"], ["f_vehicle", "vehicle"],
+    ["f_overhead", "overhead"], ["f_commission", "commission"], ["f_targetProfit", "targetProfit"],
+    ["f_minCharge", "minCharge"], ["f_discount", "discount"], ["f_tax", "tax"], ["f_proposedPrice", "proposedPrice"],
+  ];
+  simpleFields.forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("input", () => {
+      App.form[key] = el.value;
+      if (NUMERIC_FIELD_KEYS.has(key)) validateField(el, key);
+      if (key === "salesperson") applySalespersonCommission();
+      softRecalc();
+    });
+  });
+
+  document.getElementById("f_service").addEventListener("change", (e) => {
+    App.form.service = e.target.value;
+    onServiceChange();
+    softRecalc();
+  });
+
+  document.querySelectorAll('input[name="pricingMode"]').forEach(r => {
+    r.addEventListener("change", (e) => {
+      App.form.pricingMode = e.target.value;
+      onModeChange();
+      softRecalc();
+    });
+  });
+
+  document.getElementById("calcBtn").addEventListener("click", onCalculate);
+  document.getElementById("saveHistBtn").addEventListener("click", onSaveHistory);
+  document.getElementById("pdfBtn").addEventListener("click", onPrintReport);
+}
+
+const ALLOW_NEGATIVE_FIELDS = new Set([]);
+function validateField(el, key) {
+  const s = String(el.value).trim();
+  const errEl = document.getElementById(el.id + "_err");
+  if (!errEl) return;
+  if (s === "") { el.classList.remove("invalid"); errEl.textContent = ""; delete errorsByField[key]; return; }
+  const n = Number(s);
+  if (Number.isNaN(n)) {
+    el.classList.add("invalid"); errEl.textContent = "Enter a valid number"; errorsByField[key] = true;
+  } else if (n < 0 && !ALLOW_NEGATIVE_FIELDS.has(key)) {
+    el.classList.add("invalid"); errEl.textContent = "Cannot be negative"; errorsByField[key] = true;
+  } else {
+    el.classList.remove("invalid"); errEl.textContent = ""; delete errorsByField[key];
+  }
+}
+
+function onModeChange() {
+  const isUnit = App.form.pricingMode === DBS.MODE_UNIT;
+  document.getElementById("unitRow").style.display = isUnit ? "grid" : "none";
+}
+
+function onServiceChange() {
+  const share = DBS.SERVICE_LABOR_SHARE[App.form.service];
+  const hint = document.getElementById("laborShareHint");
+  if (hint) hint.textContent = share !== undefined ? `Typical labor share: ${Math.round(share * 100)}%` : "";
+  const rule = App.settings.serviceRules[App.form.service] || {};
+  const note = document.getElementById("benchmarkNote");
+  if (note) {
+    const keys = [["Labor", "labor"], ["Chem.", "chemicals"], ["Machine", "machine"], ["Pads", "pads"],
+      ["Water", "water"], ["Vehicle", "vehicle"], ["Maint.", "maintenance"], ["Deprec.", "depreciation"],
+      ["Admin", "admin"], ["Comm.", "commission"], ["Profit", "profit"]];
+    const line = keys.map(([label, k]) => `${label} ${rule[k] ?? 0}%`).join("   ");
+    note.innerHTML = `<b>Pricing benchmark for ${App.form.service}</b><br>${line}`;
+  }
+  applySalespersonCommission();
+}
+
+function applySalespersonCommission() {
+  const name = (App.form.salesperson || "").trim().toLowerCase();
+  const person = App.settings.salespeople.find(p => p.name.trim().toLowerCase() === name);
+  const pct = person ? person.commissionPct : App.settings.defaultCommissionPct;
+  App.form.commission = pct;
+  const el = document.getElementById("f_commission");
+  if (el) el.value = pct;
+}
+
+// ------------------------------------------------------------------
+// Live recalculation (top banner)
+// ------------------------------------------------------------------
+function softRecalc() {
+  const priceEl = document.getElementById("priceValue");
+  const subEl = document.getElementById("priceSub");
+  const badgeHost = document.getElementById("badgeHost");
+  const liveStatus = document.getElementById("liveStatus");
+  try {
+    const inp = collectInputs();
+    const r = calculate(inp);
+    priceEl.textContent = money(r.clientTotal);
+    const bits = [`DBS internal price: ${money(r.dbsPrice)}`];
+    if (r.pricePerUnit !== null) bits.push(`${money(r.pricePerUnit)} / ${inp.unitLabel}`);
+    if (r.efficiencyPct !== null) bits.push(`Labor efficiency: ${r.efficiencyPct.toFixed(1)}%`);
+    subEl.textContent = bits.join("   •   ");
+    badgeHost.innerHTML = `<span class="badge" style="background:${r.resultColor}">${r.resultLabel}</span>`;
+    liveStatus.textContent = "Calculation up to date";
+  } catch (e) {
+    priceEl.textContent = "Fill in the job and go to Review";
+    subEl.textContent = "";
+    badgeHost.innerHTML = "";
+    liveStatus.textContent = "Updates automatically";
+  }
+}
+
+function renderBreakdown(inp, r) {
+  const lines = [
+    `Direct cost              ${money(r.directCost)}`,
+    `Divisor                  ${r.divisor.toFixed(4)}`,
+    `Formula price            ${money(r.recommendedPrice)}`,
+    "",
+    `DBS price                ${money(r.dbsPrice)}`,
+    `  Direct cost           -${money(r.directCost)}`,
+    `  Overhead              -${money(r.overheadAmt)}`,
+    `  Commission            -${money(r.commissionAmt)}`,
+    `Net profit               ${money(r.profitAmt)}`,
+    `Margin                   ${pctFmt(r.margin)}`,
+    "",
+    "CLIENT INVOICE",
+    `  DBS price              ${money(r.dbsPrice)}`,
+    `  Discount (${pctFmt(inp.discount)})       -${money(r.discountAmt)}`,
+    `  After discount         ${money(r.priceAfterDiscount)}`,
+    `  Tax (${pctFmt(inp.tax)})            +${money(r.taxAmt)}`,
+    `  TOTAL TO CHARGE        ${money(r.clientTotal)}`,
+  ];
+  lines.push("", `Result                   ${r.resultLabel}`, `Action                   ${r.resultAction}`);
+  if (r.pricePerUnit !== null) lines.push(`  Price / ${inp.unitLabel.padEnd(10)}${money(r.pricePerUnit)}`);
+  if (r.efficiencyPct !== null) {
+    lines.push("", `Estimated hours          ${r.laborHoursEstTotal}`, `Actual hours             ${r.laborHoursActualTotal}`, `Efficiency               ${r.efficiencyPct.toFixed(1)}%`);
+  }
+  if (r.proposed) {
+    lines.push("", "PROPOSED PRICE CHECK", `  Price                  ${money(r.proposed.price)}`, `  Net profit             ${money(r.proposed.profitAmt)}`, `  Margin                 ${pctFmt(r.proposed.margin)}`, `  ${r.proposed.label}`);
+  }
+  const rule = App.settings.serviceRules[inp.service];
+  if (rule) {
+    lines.push("", "SERVICE PRICING BENCHMARK",
+      `  Service                 ${inp.service}`,
+      `  Labor target            ${rule.labor}%`,
+      `  Actual labor share      ${(r.clientTotal ? (r.laborCostTotal / r.clientTotal) * 100 : 0).toFixed(1)}%`,
+      `  Commission target       ${rule.commission}%`,
+      `  Actual commission       ${(inp.commission * 100).toFixed(1)}%`,
+      `  Profit target           ${rule.profit}%`,
+      `  Actual profit margin    ${(r.margin * 100).toFixed(1)}%`);
+  }
+  if (r.warnings.length) {
+    lines.push("", "NOTES");
+    r.warnings.forEach(w => lines.push("• " + w));
+  }
+  document.getElementById("breakdownText").textContent = lines.join("\n");
+}
+
+function buildPrintReport(inp, r) {
+  const gen = new Date().toLocaleString();
+  const techs = inp.technicians.filter(t => !(t.estHours <= 0 && t.actualHours <= 0 && t.rate <= 0 && t.flatAmount <= 0 && !(t.name || "").trim()));
+
+  let laborRows = "";
+  techs.forEach(t => {
+    const rateDisp = t.payType === DBS.PAY_FLAT ? money(t.flatAmount) : `${money(t.rate)}/h`;
+    laborRows += `<tr><td>${t.name || "-"}</td><td>${t.role}</td><td>${t.payType}</td>
+      <td>${t.estHours || "-"}</td><td>${t.actualHours > 0 ? t.actualHours : "-"}</td>
+      <td>${rateDisp}</td><td>${money(DBS.technicianCost ? DBS.technicianCost(t) : 0)}</td></tr>`;
+  });
+
+  const laborTableHtml = techs.length ? `
+    <div class="pr-section-title">Step 1 - Labor</div>
+    <table class="pr-table"><thead><tr><th>Name</th><th>Role</th><th>Pay</th><th>Est h</th><th>Actual h</th><th>Rate/Flat</th><th>Cost</th></tr></thead>
+    <tbody>${laborRows}<tr class="pr-total"><td colspan="6">Total labor</td><td>${money(r.laborCostTotal)}</td></tr></tbody></table>` : "";
+
+  const proposedHtml = r.proposed ? `
+    <div class="pr-section-title">Evaluation of the proposed price</div>
+    <table class="pr-table">
+      <tr><td>Proposed price</td><td>${money(r.proposed.price)}</td></tr>
+      <tr><td>Total cost</td><td>-${money(r.proposed.totalCost)}</td></tr>
+      <tr class="pr-total"><td>Net profit</td><td>${money(r.proposed.profitAmt)}</td></tr>
+      <tr class="pr-total"><td>Profit margin</td><td>${pctFmt(r.proposed.margin)}</td></tr>
+    </table>
+    <div class="pr-result-band" style="background:${r.proposed.color}"><span>${r.proposed.label}</span></div>` : "";
+
+  const notesHtml = r.warnings.length ? `
+    <div class="pr-section-title">Notes</div>
+    <ul class="pr-notes">${r.warnings.map(w => `<li>${w}</li>`).join("")}</ul>` : "";
+
+  document.getElementById("printReport").innerHTML = `
+    <div class="pr-header">
+      <div class="pr-logo-strip"><img src="${window.DBS_LOGO_DATA_URI}" alt="DBS Building Services"></div>
+      <div class="pr-brand">DBS BUILDING SERVICES</div>
+      <h1>Extra Service Pricing Report</h1>
+      <div class="pr-sub">Price to charge the client, protecting the target margin</div>
+    </div>
+    <table class="pr-info">
+      <tr><td class="pr-label">Client</td><td>${inp.client || "-"}</td><td class="pr-label">Invoice #</td><td>${inp.invoice || "-"}</td></tr>
+      <tr><td class="pr-label">Location</td><td>${inp.location || "-"}</td><td class="pr-label">Service date</td><td>${inp.date || "-"}</td></tr>
+      <tr><td class="pr-label">Service</td><td>${inp.service}</td><td class="pr-label">Salesperson</td><td>${inp.salesperson || "-"}</td></tr>
+      <tr><td class="pr-label">Pricing mode</td><td>${inp.pricingMode}</td><td class="pr-label">Generated</td><td>${gen}</td></tr>
+    </table>
+
+    <div class="pr-banner">
+      <span class="pr-banner-label">PRICE TO CHARGE THE CLIENT</span>
+      <span class="pr-banner-value">${money(r.clientTotal)}</span>
+    </div>
+    <div class="pr-subnote">
+      ${r.pricePerUnit !== null ? `${money(r.pricePerUnit)} per ${inp.unitLabel} (${inp.unitQuantity} ${inp.unitLabel})<br>` : ""}
+      DBS internal price (pre discount/tax): ${money(r.dbsPrice)}
+      ${r.belowMinimum ? `<br>Formula price was ${money(r.recommendedPrice)}; minimum charge applied.` : ""}
+    </div>
+
+    ${laborTableHtml}
+
+    <div class="pr-section-title">Step 2 - Estimated direct cost</div>
+    <table class="pr-table">
+      <tr><td>Labor</td><td>${money(r.laborCostTotal)}</td></tr>
+      <tr><td>Chemicals</td><td>${money(inp.chemicals)}</td></tr>
+      <tr><td>Machine / equipment</td><td>${money(inp.machine)}</td></tr>
+      <tr><td>Consumables</td><td>${money(inp.consumables)}</td></tr>
+      <tr><td>Water</td><td>${money(inp.water)}</td></tr>
+      <tr><td>Vehicle / travel</td><td>${money(inp.vehicle)}</td></tr>
+      <tr class="pr-total"><td>Estimated Direct Cost</td><td>${money(r.directCost)}</td></tr>
+    </table>
+
+    <div class="pr-section-title">Step 3 - Pricing math (DBS internal price)</div>
+    <table class="pr-table">
+      <tr><td>Overhead</td><td>${pctFmt(inp.overhead)}</td></tr>
+      <tr><td>Commission (${inp.salesperson || "n/a"})</td><td>${pctFmt(inp.commission)}</td></tr>
+      <tr><td>Target profit</td><td>${pctFmt(inp.targetProfit)}</td></tr>
+      <tr><td>Divisor</td><td>${r.divisor.toFixed(4)}</td></tr>
+      <tr class="pr-total"><td>DBS price = Direct cost / divisor</td><td>${money(r.dbsPrice)}</td></tr>
+    </table>
+
+    <div class="pr-section-title">Step 4 - Discount, tax and client total</div>
+    <table class="pr-table">
+      <tr><td>DBS price</td><td>${money(r.dbsPrice)}</td></tr>
+      <tr><td>Discount (${pctFmt(inp.discount)})</td><td>-${money(r.discountAmt)}</td></tr>
+      <tr><td>Price after discount</td><td>${money(r.priceAfterDiscount)}</td></tr>
+      <tr><td>Tax (${pctFmt(inp.tax)})</td><td>+${money(r.taxAmt)}</td></tr>
+      <tr class="pr-total"><td>Client invoice total</td><td>${money(r.clientTotal)}</td></tr>
+    </table>
+
+    <div class="pr-section-title">Result at the DBS price (pre discount/tax)</div>
+    <table class="pr-table">
+      <tr><td>Direct cost</td><td>-${money(r.directCost)}</td></tr>
+      <tr><td>Overhead</td><td>-${money(r.overheadAmt)}</td></tr>
+      <tr><td>Commission</td><td>-${money(r.commissionAmt)}</td></tr>
+      <tr class="pr-total"><td>Net profit</td><td>${money(r.profitAmt)}</td></tr>
+      <tr class="pr-total"><td>Profit margin</td><td>${pctFmt(r.margin)}</td></tr>
+    </table>
+    <div class="pr-result-band" style="background:${r.resultColor}">
+      <span>${r.resultLabel}</span><span>${pctFmt(r.margin)} margin</span>
+    </div>
+    <div class="pr-subnote">${r.resultAction}</div>
+
+    ${proposedHtml}
+    ${notesHtml}
+
+    <div class="pr-footer">
+      Overhead, commission, target profit and minimum charge are DBS policy placeholders - confirm with Finance
+      against real cost data. This report is a pricing aid, not a final financial determination.
+    </div>
+  `;
+}
+
+function onPrintReport() {
+  if (!App.lastResult) onCalculate();
+  if (!App.lastResult) return;
+  const inp = collectInputs();
+  buildPrintReport(inp, App.lastResult);
+  window.print();
+}
+
+function onCalculate() {
+  let inp, r;
+  try {
+    inp = collectInputs();
+    r = calculate(inp);
+  } catch (e) {
+    alert("Cannot calculate:\n\n" + e.message);
+    return;
+  }
+  App.lastResult = r;
+  document.getElementById("priceValue").textContent = money(r.clientTotal);
+  document.getElementById("priceSub").textContent = `DBS internal price: ${money(r.dbsPrice)}   •   Margin: ${pctFmt(r.margin)}`;
+  document.getElementById("badgeHost").innerHTML = `<span class="badge" style="background:${r.resultColor}">${r.resultLabel}</span>`;
+  renderBreakdown(inp, r);
+
+  inp.technicians.forEach(t => {
+    if (t.name && t.payType === DBS.PAY_HOURLY && t.rate > 0) DBS.upsertTeamMember(t.name, t.role, t.rate);
+  });
+  buildLaborRows(); // refresh datalist with any newly learned names
+}
+
+// ------------------------------------------------------------------
+// History: save + file connection (File System Access API w/ fallback)
+// ------------------------------------------------------------------
+function buildHistoryRow(inp, r) {
+  return {
+    timestamp: new Date().toISOString().slice(0, 19).replace("T", " "),
+    client: inp.client, location: inp.location, invoice: inp.invoice, service_date: inp.date,
+    service: inp.service, pricing_mode: inp.pricingMode,
+    labor_cost: r.laborCostTotal, direct_cost: r.directCost, dbs_price: r.dbsPrice,
+    discount_pct: (inp.discount * 100).toFixed(2), discount_amt: r.discountAmt,
+    tax_pct: (inp.tax * 100).toFixed(2), tax_amt: r.taxAmt, client_total: r.clientTotal,
+    price_per_unit: r.pricePerUnit ?? "", overhead_pct: (inp.overhead * 100).toFixed(2),
+    commission_pct: (inp.commission * 100).toFixed(2), commission_amt: r.commissionAmt,
+    target_profit_pct: (inp.targetProfit * 100).toFixed(2), profit_amt: r.profitAmt,
+    margin_pct: (r.margin * 100).toFixed(2), result_label: r.resultLabel,
+    salesperson: inp.salesperson, efficiency_pct: r.efficiencyPct ?? "",
+  };
+}
+
+async function writeHistoryFile() {
+  if (!App.fileHandle) return false;
+  try {
+    const writable = await App.fileHandle.createWritable();
+    await writable.write(DBS.historyToText(App.history));
+    await writable.close();
+    return true;
+  } catch (e) {
+    console.error("Failed to write history file:", e);
+    return false;
+  }
+}
+
+async function onSaveHistory() {
+  if (!App.lastResult) onCalculate();
+  if (!App.lastResult) return;
+  const inp = collectInputs();
+  const row = buildHistoryRow(inp, App.lastResult);
+  App.history.push(row);
+  saveHistoryCache(App.history);
+  const wroteFile = await writeHistoryFile();
+  refreshNameDatalists();
+  alert(wroteFile ? "Quote saved to your history.txt file." : "Quote saved (in this browser). Connect a .txt file on the History page to also save it to disk.");
+}
+
+function saveHistoryCache(rows) { localStorage.setItem("dbs_history_cache_v1", JSON.stringify(rows)); }
+
+async function connectExistingFile() {
+  try {
+    const [handle] = await window.showOpenFilePicker({ types: [{ description: "Text file", accept: { "text/plain": [".txt"] } }] });
+    App.fileHandle = handle;
+    const file = await handle.getFile();
+    const text = await file.text();
+    const rows = DBS.textToHistory(text);
+    App.history = rows;
+    saveHistoryCache(App.history);
+    renderHistoryPage();
+  } catch (e) { /* user cancelled */ }
+}
+async function createNewFile() {
+  try {
+    const handle = await window.showSaveFilePicker({ suggestedName: "DBS_Pricing_History.txt", types: [{ description: "Text file", accept: { "text/plain": [".txt"] } }] });
+    App.fileHandle = handle;
+    await writeHistoryFile();
+    renderHistoryPage();
+  } catch (e) { /* user cancelled */ }
+}
+function exportHistoryTxt() {
+  const blob = new Blob([DBS.historyToText(App.history)], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "DBS_Pricing_History.txt";
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+function importHistoryTxt(file) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    const rows = DBS.textToHistory(reader.result);
+    App.history = rows;
+    saveHistoryCache(App.history);
+    renderHistoryPage();
+  };
+  reader.readAsText(file);
+}
+document.getElementById("importHistoryInput").addEventListener("change", (e) => {
+  if (e.target.files[0]) importHistoryTxt(e.target.files[0]);
+});
+
+function renderHistoryPage() {
+  refreshNameDatalists();
+  const btnHost = document.getElementById("historyButtons");
+  const supportsFS = "showSaveFilePicker" in window;
+  btnHost.innerHTML = "";
+  if (supportsFS) {
+    const btn1 = document.createElement("button");
+    btn1.className = "btn btn-primary"; btn1.textContent = "Open existing history.txt";
+    btn1.onclick = connectExistingFile;
+    const btn2 = document.createElement("button");
+    btn2.className = "btn btn-secondary"; btn2.textContent = "Create new history.txt";
+    btn2.onclick = createNewFile;
+    btnHost.appendChild(btn1); btnHost.appendChild(btn2);
+  }
+  const btn3 = document.createElement("button");
+  btn3.className = "btn btn-secondary"; btn3.textContent = "Download history (.txt)";
+  btn3.onclick = exportHistoryTxt;
+  const btn4 = document.createElement("button");
+  btn4.className = "btn btn-secondary"; btn4.textContent = "Import from .txt";
+  btn4.onclick = () => document.getElementById("importHistoryInput").click();
+  btnHost.appendChild(btn3); btnHost.appendChild(btn4);
+
+  document.getElementById("historyFileStatus").innerHTML = App.fileHandle
+    ? `<span class="status-pill status-connected">Connected</span> Saving directly to your .txt file`
+    : `<span class="status-pill status-disconnected">Not connected</span> Using in-browser storage — use Download/Import to keep a portable .txt copy`;
+
+  const table = document.getElementById("historyTable");
+  const cols = ["timestamp", "client", "service", "pricing_mode", "client_total", "margin_pct", "result_label", "salesperson"];
+  let html = "<thead><tr>" + cols.map(c => `<th>${c.replace(/_/g, " ")}</th>`).join("") + "</tr></thead><tbody>";
+  App.history.slice().reverse().forEach(row => {
+    html += "<tr>" + cols.map(c => `<td>${row[c] ?? ""}</td>`).join("") + "</tr>";
+  });
+  html += "</tbody>";
+  table.innerHTML = html;
+}
+
+// ------------------------------------------------------------------
+// Dashboard
+// ------------------------------------------------------------------
+function computeDashboard(rows) {
+  if (!rows.length) {
+    return { totalJobs: 0, avgMargin: null, totalRevenue: 0, bandCounts: { GREEN: 0, YELLOW: 0, ORANGE: 0, RED: 0 }, topClients: [], topSalespeople: [] };
+  }
+  const margins = rows.map(r => Number(r.margin_pct) || 0);
+  const avgMargin = margins.reduce((a, b) => a + b, 0) / margins.length;
+  const totalRevenue = rows.reduce((s, r) => s + (Number(r.client_total) || 0), 0);
+  const bandCounts = { GREEN: 0, YELLOW: 0, ORANGE: 0, RED: 0 };
+  rows.forEach(r => {
+    const label = (r.result_label || "").toUpperCase();
+    for (const band of Object.keys(bandCounts)) if (label.startsWith(band)) { bandCounts[band]++; break; }
+  });
+  const revenueByClient = {};
+  rows.forEach(r => {
+    const c = (r.client || "").trim() || "(no client name)";
+    revenueByClient[c] = (revenueByClient[c] || 0) + (Number(r.client_total) || 0);
+  });
+  const topClients = Object.entries(revenueByClient).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const commissionBySales = {};
+  rows.forEach(r => {
+    const s = (r.salesperson || "").trim();
+    if (!s) return;
+    commissionBySales[s] = (commissionBySales[s] || 0) + (Number(r.commission_amt) || 0);
+  });
+  const topSalespeople = Object.entries(commissionBySales).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  return { totalJobs: rows.length, avgMargin, totalRevenue, bandCounts, topClients, topSalespeople };
+}
+
+function renderBars(hostId, data, colorMap) {
+  const host = document.getElementById(hostId);
+  if (!data.length) { host.innerHTML = `<div class="hint">No data yet.</div>`; return; }
+  const max = Math.max(...data.map(d => d[1]), 1);
+  host.innerHTML = data.map(([label, val]) => {
+    const color = (colorMap && colorMap[String(label).toUpperCase()]) || "var(--accent)";
+    const w = Math.max((val / max) * 100, 3);
+    return `<div class="bar-row">
+      <div class="bar-label">${label}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${color}"></div></div>
+      <div class="bar-value">${val.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div>
+    </div>`;
+  }).join("");
+}
+
+function renderDashboardPage() {
+  const dash = computeDashboard(App.history);
+  document.getElementById("kpiRow").innerHTML = `
+    <div class="kpi-box"><div class="kpi-label">TOTAL QUOTES SAVED</div><div class="kpi-value">${dash.totalJobs}</div></div>
+    <div class="kpi-box"><div class="kpi-label">AVERAGE MARGIN</div><div class="kpi-value">${dash.avgMargin !== null ? dash.avgMargin.toFixed(1) + "%" : "-"}</div></div>
+    <div class="kpi-box"><div class="kpi-label">TOTAL REVENUE</div><div class="kpi-value">$${dash.totalRevenue.toLocaleString(undefined, { maximumFractionDigits: 0 })}</div></div>
+  `;
+  renderBars("bandBars", Object.entries(dash.bandCounts), { GREEN: "#1E7F3C", YELLOW: "#B8860B", ORANGE: "#C05A00", RED: "#B00020" });
+  renderBars("clientBars", dash.topClients);
+  renderBars("salesBars", dash.topSalespeople);
+}
+
+// ------------------------------------------------------------------
+// Management page
+// ------------------------------------------------------------------
+function renderManagementPage() {
+  renderPolicyTab();
+  renderPeopleTab();
+  renderServicesTab();
+  renderTeamTab();
+}
+
+function renderPolicyTab() {
+  const host = document.getElementById("tab-policy");
+  const s = App.settings;
+  host.innerHTML = `
+    <div class="section-header"><div><div class="title">DBS Pricing Policy</div><div class="subtitle">These values become the defaults for new quotes.</div></div></div>
+    <div class="field-grid">
+      ${fieldHTML("Overhead %", "p_overhead", "number", s.overheadPct)}
+      ${fieldHTML("Default commission %", "p_commission", "number", s.defaultCommissionPct)}
+      ${fieldHTML("Target profit %", "p_profit", "number", s.targetProfitPct)}
+      ${fieldHTML("Minimum charge $", "p_min", "number", s.minimumCharge)}
+      ${fieldHTML("Default discount %", "p_discount", "number", s.discountPct)}
+      ${fieldHTML("Default tax %", "p_tax", "number", s.taxPct)}
+    </div>
+    <div class="note-box">Salesperson-specific commission overrides the default commission.</div>
+    <div class="btn-row" style="margin-top:14px"><button class="btn btn-primary" id="savePolicyBtn">Save Pricing Policy</button></div>
+  `;
+  document.getElementById("savePolicyBtn").addEventListener("click", () => {
+    const overhead = Number(document.getElementById("p_overhead").value);
+    const commission = Number(document.getElementById("p_commission").value);
+    const profit = Number(document.getElementById("p_profit").value);
+    const min = Number(document.getElementById("p_min").value);
+    const discount = Number(document.getElementById("p_discount").value);
+    const tax = Number(document.getElementById("p_tax").value);
+    if ([overhead, commission, profit, min, discount, tax].some(Number.isNaN)) { alert("All policy fields must be valid numbers."); return; }
+    if (overhead < 0 || commission < 0 || profit < 0) { alert("Overhead, commission and target profit cannot be negative."); return; }
+    if (overhead + commission + profit >= 100) { alert("Overhead + Commission + Target Profit must be less than 100%."); return; }
+    if (min < 0) { alert("Minimum charge cannot be negative."); return; }
+    if (discount < 0 || discount > 100 || tax < 0 || tax > 100) { alert("Discount and tax must be between 0% and 100%."); return; }
+    Object.assign(App.settings, { overheadPct: overhead, defaultCommissionPct: commission, targetProfitPct: profit, minimumCharge: min, discountPct: discount, taxPct: tax });
+    DBS.saveSettings(App.settings);
+    App.form.overhead = overhead; App.form.targetProfit = profit; App.form.minCharge = min;
+    App.form.discount = discount; App.form.tax = tax;
+    alert("Pricing policy saved.");
+  });
+}
+
+function renderPeopleTab() {
+  const host = document.getElementById("tab-people");
+  host.innerHTML = `
+    <div class="section-header"><div><div class="title">Salespeople</div><div class="subtitle">Commission percentage applied to each salesperson's quotes.</div></div></div>
+    <div class="field-grid">
+      ${fieldHTML("Name", "sp_name", "text", "")}
+      ${fieldHTML("Commission %", "sp_commission", "number", App.settings.defaultCommissionPct)}
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="addPersonBtn">Add / Update</button>
+      <button class="btn btn-secondary" id="clearPersonBtn">Clear</button>
+    </div>
+    <div class="hint" style="margin-bottom:8px">Click a row's "Delete" button to remove that salesperson (click once more to confirm).</div>
+    <table class="hist-table" id="peopleTable"><thead><tr><th>Salesperson</th><th>Commission %</th><th></th></tr></thead><tbody></tbody></table>
+  `;
+
+  function refresh() {
+    const tbody = document.querySelector("#peopleTable tbody");
+    const sorted = App.settings.salespeople.slice().sort((a, b) => a.name.localeCompare(b.name));
+    if (!sorted.length) {
+      tbody.innerHTML = `<tr><td colspan="3" class="hint">No salespeople added yet.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = sorted.map((p, i) => `
+      <tr data-idx="${i}">
+        <td>${escapeHtml(p.name)}</td>
+        <td>${p.commissionPct}%</td>
+        <td><button class="btn btn-secondary del-person-btn" data-idx="${i}" style="padding:4px 10px;font-size:12px">Delete</button></td>
+      </tr>`).join("");
+
+    // click a row (but not its Delete button) -> load into the form for editing
+    tbody.querySelectorAll("tr[data-idx]").forEach(tr => {
+      tr.addEventListener("click", (e) => {
+        if (e.target.closest(".del-person-btn")) return;
+        const p = sorted[Number(tr.dataset.idx)];
+        tbody.querySelectorAll("tr").forEach(x => x.style.background = "");
+        tr.style.background = "var(--soft-blue)";
+        document.getElementById("sp_name").value = p.name;
+        document.getElementById("sp_commission").value = p.commissionPct;
+      });
+    });
+
+    // Delete button per row, with an inline "click again to confirm" step
+    // instead of window.confirm() (native confirm() can be silently
+    // suppressed by the browser after repeated dialogs, which made this
+    // look broken).
+    tbody.querySelectorAll(".del-person-btn").forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const p = sorted[Number(btn.dataset.idx)];
+        if (btn.dataset.armed === "1") {
+          App.settings.salespeople = App.settings.salespeople.filter(
+            x => x.name.toLowerCase() !== p.name.toLowerCase());
+          DBS.saveSettings(App.settings);
+          refreshNameDatalists();
+          document.getElementById("sp_name").value = "";
+          document.getElementById("sp_commission").value = App.settings.defaultCommissionPct;
+          refresh();
+        } else {
+          tbody.querySelectorAll(".del-person-btn").forEach(b => {
+            b.dataset.armed = "0"; b.textContent = "Delete"; b.classList.remove("btn-primary");
+          });
+          btn.dataset.armed = "1";
+          btn.textContent = "Confirm?";
+          btn.style.background = "var(--red)";
+          btn.style.color = "#fff";
+          btn.style.borderColor = "var(--red)";
+        }
+      });
+    });
+  }
+  refresh();
+
+  document.getElementById("addPersonBtn").addEventListener("click", () => {
+    const name = document.getElementById("sp_name").value.trim();
+    const pctv = Number(document.getElementById("sp_commission").value);
+    if (!name) { alert("Enter the salesperson's name."); return; }
+    if (Number.isNaN(pctv) || pctv < 0 || pctv >= 100) { alert("Commission must be between 0% and less than 100%."); return; }
+    const existing = App.settings.salespeople.find(p => p.name.toLowerCase() === name.toLowerCase());
+    if (existing) existing.commissionPct = pctv; else App.settings.salespeople.push({ name, commissionPct: pctv });
+    DBS.saveSettings(App.settings);
+    refresh();
+    refreshNameDatalists();
+    document.getElementById("sp_name").value = ""; document.getElementById("sp_commission").value = App.settings.defaultCommissionPct;
+  });
+  document.getElementById("clearPersonBtn").addEventListener("click", () => {
+    document.getElementById("sp_name").value = "";
+    document.getElementById("sp_commission").value = App.settings.defaultCommissionPct;
+    document.querySelectorAll("#peopleTable tbody tr").forEach(x => x.style.background = "");
+  });
+}
+
+function renderServicesTab() {
+  const host = document.getElementById("tab-services");
+  const services = Object.keys(DBS.DEFAULT_SERVICE_RULES);
+  host.innerHTML = `
+    <div class="section-header"><div><div class="title">Service Pricing Rules</div><div class="subtitle">Benchmark allocations by service (must total 100%). Reference only.</div></div></div>
+    <div class="field">
+      <label>Service</label>
+      <select id="svc_select">${services.map(s => `<option>${s}</option>`).join("")}</select>
+    </div>
+    <div class="field-grid" id="ruleFields"></div>
+    <div class="rule-total" id="ruleTotal"></div>
+    <div class="btn-row" style="margin-top:10px">
+      <button class="btn btn-primary" id="saveRuleBtn">Save Service Rule</button>
+      <button class="btn btn-secondary" id="resetRuleBtn">Reset to Reference</button>
+    </div>
+  `;
+  const keys = [["Labor %", "labor"], ["Chemicals %", "chemicals"], ["Machine %", "machine"], ["Pads %", "pads"],
+    ["Water %", "water"], ["Vehicle %", "vehicle"], ["Maintenance %", "maintenance"], ["Depreciation %", "depreciation"],
+    ["Admin %", "admin"], ["Commission %", "commission"], ["Profit %", "profit"]];
+
+  function loadRuleEditor() {
+    const service = document.getElementById("svc_select").value;
+    const rule = App.settings.serviceRules[service] || DBS.DEFAULT_SERVICE_RULES[service];
+    document.getElementById("ruleFields").innerHTML = keys.map(([label, k]) =>
+      fieldHTML(label, "rk_" + k, "number", rule[k])).join("");
+    keys.forEach(([, k]) => document.getElementById("rk_" + k).addEventListener("input", updateTotal));
+    updateTotal();
+  }
+  function updateTotal() {
+    let total = 0, profit = 0;
+    keys.forEach(([, k]) => {
+      const v = Number(document.getElementById("rk_" + k).value) || 0;
+      total += v;
+      if (k === "profit") profit = v;
+    });
+    const ok = Math.abs(total - 100) < 0.01;
+    const el = document.getElementById("ruleTotal");
+    el.textContent = `Cost allocation: ${(total - profit).toFixed(0)}%   •   Profit: ${profit}%   •   Total: ${total.toFixed(0)}%   ${ok ? "✓" : "⚠ Must equal 100%"}`;
+    el.style.color = ok ? "#127A43" : "var(--red)";
+  }
+  document.getElementById("svc_select").addEventListener("change", loadRuleEditor);
+  document.getElementById("saveRuleBtn").addEventListener("click", () => {
+    const service = document.getElementById("svc_select").value;
+    const rule = {};
+    let hasErr = false;
+    keys.forEach(([, k]) => {
+      const v = Number(document.getElementById("rk_" + k).value);
+      if (Number.isNaN(v) || v < 0) hasErr = true;
+      rule[k] = v;
+    });
+    if (hasErr) { alert("All service rule fields must be valid, non-negative numbers."); return; }
+    const total = Object.values(rule).reduce((a, b) => a + b, 0);
+    if (Math.abs(total - 100) >= 0.01) { alert(`The service rule must total exactly 100%. Current total: ${total.toFixed(1)}%.`); return; }
+    App.settings.serviceRules[service] = rule;
+    DBS.saveSettings(App.settings);
+    if (App.form.service === service) onServiceChange();
+    alert(`Pricing rule for ${service} saved.`);
+  });
+  document.getElementById("resetRuleBtn").addEventListener("click", () => {
+    const service = document.getElementById("svc_select").value;
+    const def = DBS.DEFAULT_SERVICE_RULES[service];
+    keys.forEach(([, k]) => document.getElementById("rk_" + k).value = def[k]);
+    updateTotal();
+  });
+  loadRuleEditor();
+}
+
+function renderTeamTab() {
+  const host = document.getElementById("tab-team");
+  const team = DBS.loadTeam();
+  host.innerHTML = `
+    <div class="section-header"><div><div class="title">Rate Card (Team)</div><div class="subtitle">Learned automatically from Hourly technicians you've entered. Used to auto-fill Name/Rate in the Labor step.</div></div></div>
+    <table class="hist-table"><thead><tr><th>Name</th><th>Role</th><th>Rate $/h</th><th></th></tr></thead>
+    <tbody>${team.map((m, i) => `<tr><td>${m.name}</td><td>${m.role}</td><td>$${Number(m.rate).toFixed(2)}</td><td><button class="btn btn-secondary" data-idx="${i}" style="padding:4px 10px">Remove</button></td></tr>`).join("")}</tbody></table>
+  `;
+  host.querySelectorAll("button[data-idx]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const idx = Number(btn.dataset.idx);
+      const list = DBS.loadTeam();
+      list.splice(idx, 1);
+      DBS.saveTeam(list);
+      renderTeamTab();
+    });
+  });
+}
+
+// ------------------------------------------------------------------
+// Init
+// ------------------------------------------------------------------
+function init() {
+  window.DBS_LOGO_DATA_URI = (document.querySelector(".brand-logo") || {}).src || "";
+  buildStepBar();
+  buildWizard();
+  refreshNameDatalists();
+  showStep(0);
+  softRecalc();
+}
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+else init();
+
+window.DBS_UI_TEST_HOOKS = { showStep, onCalculate, onSaveHistory, renderHistoryPage, renderDashboardPage, renderManagementPage, computeDashboard, buildHistoryRow };
+
+})();
+
+</script>
+</body>
+</html>
