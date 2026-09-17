@@ -11,7 +11,7 @@ export function PrintReport({ inputs, result }: { inputs: PricingInputs; result:
       <div className="pr-header">
         <div className="pr-logo-strip">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="DBS Building Services" />
+          <img src="/logo-light.png" alt="DBS Building Services" />
         </div>
         <div className="pr-brand">DBS BUILDING SERVICES</div>
         <h1>Extra Service Pricing Report</h1>

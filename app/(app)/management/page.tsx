@@ -2,7 +2,7 @@ import { requireProfile } from "@/lib/dal";
 import { createClient } from "@/lib/supabase/server";
 import { ManagementTabs } from "@/components/management/ManagementTabs";
 import type { PricingPolicyRow, SalespersonRow, ServiceRuleRow, TeamMemberRow } from "@/lib/supabase/types";
-import { DEFAULT_SERVICE_RULES } from "@/lib/pricing-engine";
+import { defaultServiceRuleRows } from "@/lib/service-rules";
 
 export default async function ManagementPage() {
   const profile = await requireProfile();
@@ -15,8 +15,6 @@ export default async function ManagementPage() {
     supabase.from("team_members").select("*").order("name"),
   ]);
 
-  const defaultServiceNames = Object.keys(DEFAULT_SERVICE_RULES);
-
   return (
     <ManagementTabs
       isAdmin={profile.role === "admin"}
@@ -27,8 +25,7 @@ export default async function ManagementPage() {
         }
       }
       salespeople={(salespeople as SalespersonRow[]) ?? []}
-      serviceRules={(serviceRules as ServiceRuleRow[])?.length ? (serviceRules as ServiceRuleRow[]) : []}
-      defaultServiceNames={defaultServiceNames}
+      serviceRules={(serviceRules as ServiceRuleRow[])?.length ? (serviceRules as ServiceRuleRow[]) : defaultServiceRuleRows()}
       teamMembers={(teamMembers as TeamMemberRow[]) ?? []}
     />
   );

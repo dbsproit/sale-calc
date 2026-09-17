@@ -243,7 +243,10 @@ export function validateInputs(inp: PricingInputs): string[] {
   return errors;
 }
 
-export function calculate(inp: PricingInputs): CalculationResult {
+// laborBenchmarkPct: fração (0-1) de participação típica da mão de obra no custo
+// direto para o serviço selecionado. Quando não informado, cai no valor de
+// referência fixo em SERVICE_LABOR_SHARE (só cobre os 10 serviços padrão).
+export function calculate(inp: PricingInputs, laborBenchmarkPct?: number | null): CalculationResult {
   const errors = validateInputs(inp);
   if (errors.length) throw new ValidationError(errors);
 
@@ -270,7 +273,7 @@ export function calculate(inp: PricingInputs): CalculationResult {
       else if (eff > 130) warnings.push(`Labor efficiency ${eff.toFixed(1)}% (finished well faster than estimated). Consider revising the estimate downward.`);
     }
   }
-  const benchmark = SERVICE_LABOR_SHARE[inp.service];
+  const benchmark = laborBenchmarkPct ?? SERVICE_LABOR_SHARE[inp.service];
   const actualShare = laborShareActual(inp);
   if (benchmark !== undefined && actualShare !== null) {
     const diff = Math.abs(actualShare - benchmark);

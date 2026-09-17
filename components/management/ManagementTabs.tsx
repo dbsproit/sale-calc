@@ -18,11 +18,10 @@ interface Props {
   policy: PricingPolicyRow;
   salespeople: SalespersonRow[];
   serviceRules: ServiceRuleRow[];
-  defaultServiceNames: string[];
   teamMembers: TeamMemberRow[];
 }
 
-export function ManagementTabs({ isAdmin, policy, salespeople, serviceRules, defaultServiceNames, teamMembers }: Props) {
+export function ManagementTabs({ isAdmin, policy, salespeople, serviceRules, teamMembers }: Props) {
   const [tab, setTab] = useState<TabKey>("policy");
 
   return (
@@ -38,7 +37,7 @@ export function ManagementTabs({ isAdmin, policy, salespeople, serviceRules, def
       <div className="card">
         {tab === "policy" && <PolicyTab isAdmin={isAdmin} initial={policy} />}
         {tab === "people" && <PeopleTab isAdmin={isAdmin} initial={salespeople} defaultCommission={policy.default_commission_pct} />}
-        {tab === "services" && <ServicesTab isAdmin={isAdmin} initialRules={serviceRules} serviceNames={defaultServiceNames} />}
+        {tab === "services" && <ServicesTab isAdmin={isAdmin} initialRules={serviceRules} />}
         {tab === "team" && <TeamTab initial={teamMembers} />}
       </div>
     </>
@@ -285,20 +284,24 @@ const RULE_KEYS: [keyof ServiceRule, string][] = [
   ["admin", "Admin %"], ["commission", "Commission %"], ["profit", "Profit %"],
 ];
 
-function ServicesTab({ isAdmin, initialRules, serviceNames }: { isAdmin: boolean; initialRules: ServiceRuleRow[]; serviceNames: string[] }) {
+function emptyRule(): ServiceRule {
+  return { labor: 0, chemicals: 0, machine: 0, pads: 0, water: 0, vehicle: 0, maintenance: 0, depreciation: 0, admin: 0, commission: 0, profit: 0 };
+}
+
+function ServicesTab({ isAdmin, initialRules }: { isAdmin: boolean; initialRules: ServiceRuleRow[] }) {
+  const [services, setServices] = useState<string[]>(() => initialRules.map((r) => r.service_name));
   const [rules, setRules] = useState<Record<string, ServiceRule>>(() => {
     const map: Record<string, ServiceRule> = {};
-    serviceNames.forEach((name) => {
-      const existing = initialRules.find((r) => r.service_name === name);
-      map[name] = existing
-        ? { labor: existing.labor, chemicals: existing.chemicals, machine: existing.machine, pads: existing.pads, water: existing.water, vehicle: existing.vehicle, maintenance: existing.maintenance, depreciation: existing.depreciation, admin: existing.admin, commission: existing.commission, profit: existing.profit }
-        : DEFAULT_SERVICE_RULES[name];
+    initialRules.forEach((r) => {
+      map[r.service_name] = { labor: r.labor, chemicals: r.chemicals, machine: r.machine, pads: r.pads, water: r.water, vehicle: r.vehicle, maintenance: r.maintenance, depreciation: r.depreciation, admin: r.admin, commission: r.commission, profit: r.profit };
     });
     return map;
   });
-  const [service, setService] = useState(serviceNames[0]);
-  const [draft, setDraft] = useState<Record<string, string>>(() => toStringMap(rules[serviceNames[0]]));
+  const [service, setService] = useState(services[0] ?? "");
+  const [draft, setDraft] = useState<Record<string, string>>(() => toStringMap(rules[services[0]] ?? emptyRule()));
   const [saving, setSaving] = useState(false);
+  const [armedDelete, setArmedDelete] = useState(false);
+  const [newName, setNewName] = useState("");
 
   function toStringMap(r: ServiceRule): Record<string, string> {
     const m: Record<string, string> = {};
@@ -308,7 +311,51 @@ function ServicesTab({ isAdmin, initialRules, serviceNames }: { isAdmin: boolean
 
   function switchService(name: string) {
     setService(name);
-    setDraft(toStringMap(rules[name]));
+    setDraft(toStringMap(rules[name] ?? emptyRule()));
+    setArmedDelete(false);
+  }
+
+  function handleAddService() {
+    const trimmed = newName.trim();
+    if (!trimmed) {
+      alert("Digite um nome para a nova categoria de serviço.");
+      return;
+    }
+    if (services.some((s) => s.toLowerCase() === trimmed.toLowerCase())) {
+      alert("Já existe uma categoria de serviço com esse nome.");
+      return;
+    }
+    setServices((prev) => [...prev, trimmed]);
+    setRules((prev) => ({ ...prev, [trimmed]: emptyRule() }));
+    setService(trimmed);
+    setDraft(toStringMap(emptyRule()));
+    setNewName("");
+  }
+
+  async function handleDeleteService() {
+    if (!armedDelete) {
+      setArmedDelete(true);
+      return;
+    }
+    setSaving(true);
+    const supabase = createClient();
+    const { error } = await supabase.from("service_rules").delete().eq("service_name", service);
+    setSaving(false);
+    if (error) {
+      alert("Erro ao remover: " + error.message);
+      return;
+    }
+    const remaining = services.filter((s) => s !== service);
+    setServices(remaining);
+    setRules((prev) => {
+      const next = { ...prev };
+      delete next[service];
+      return next;
+    });
+    const nextService = remaining[0] ?? "";
+    setService(nextService);
+    setDraft(toStringMap(rules[nextService] ?? emptyRule()));
+    setArmedDelete(false);
   }
 
   const total = RULE_KEYS.reduce((s, [k]) => s + (Number(draft[k]) || 0), 0);
@@ -347,7 +394,8 @@ function ServicesTab({ isAdmin, initialRules, serviceNames }: { isAdmin: boolean
   }
 
   function handleReset() {
-    setDraft(toStringMap(DEFAULT_SERVICE_RULES[service]));
+    const def = DEFAULT_SERVICE_RULES[service];
+    if (def) setDraft(toStringMap(def));
   }
 
   return (
@@ -355,13 +403,26 @@ function ServicesTab({ isAdmin, initialRules, serviceNames }: { isAdmin: boolean
       <div className="section-header">
         <div>
           <div className="title">Service Pricing Rules</div>
-          <div className="subtitle">Benchmark allocations by service (must total 100%). Reference only.</div>
+          <div className="subtitle">Benchmark allocations by service (must total 100%). Also controls the services offered in the Calculator.</div>
         </div>
       </div>
+      {isAdmin && (
+        <div className="field-grid" style={{ marginBottom: 4 }}>
+          <div className="field">
+            <label htmlFor="svc_new_name">Nova categoria de serviço</label>
+            <input id="svc_new_name" type="text" value={newName} onChange={(e) => setNewName(e.target.value)} placeholder="ex: Pool Deck Cleaning" />
+          </div>
+          <div className="field" style={{ display: "flex", alignItems: "flex-end" }}>
+            <button type="button" className="btn btn-secondary" onClick={handleAddService}>
+              + Add service
+            </button>
+          </div>
+        </div>
+      )}
       <div className="field">
         <label htmlFor="svc_select">Service</label>
         <select id="svc_select" value={service} onChange={(e) => switchService(e.target.value)}>
-          {serviceNames.map((s) => (
+          {services.map((s) => (
             <option key={s} value={s}>
               {s}
             </option>
@@ -390,9 +451,21 @@ function ServicesTab({ isAdmin, initialRules, serviceNames }: { isAdmin: boolean
           <button className="btn btn-primary" disabled={saving} onClick={handleSave}>
             {saving ? "Saving..." : "Save Service Rule"}
           </button>
-          <button className="btn btn-secondary" onClick={handleReset}>
-            Reset to Reference
-          </button>
+          {DEFAULT_SERVICE_RULES[service] && (
+            <button className="btn btn-secondary" onClick={handleReset}>
+              Reset to Reference
+            </button>
+          )}
+          {services.length > 1 && (
+            <button
+              className="btn btn-secondary"
+              disabled={saving}
+              onClick={handleDeleteService}
+              style={armedDelete ? { background: "var(--red)", color: "#fff", borderColor: "var(--red)" } : undefined}
+            >
+              {armedDelete ? "Confirm remove?" : "Remove service"}
+            </button>
+          )}
         </div>
       ) : (
         <div className="hint" style={{ marginTop: 10 }}>

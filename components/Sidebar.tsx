@@ -27,9 +27,7 @@ export function Sidebar({ profile }: { profile: ProfileRow }) {
   return (
     <div className="sidebar">
       <div className="brand">
-        <div className="brand-logo-badge">
-          <Image src="/logo.png" alt="DBS Building Services" width={299} height={73} className="brand-logo" priority />
-        </div>
+        <Image src="/logo-light.png" alt="DBS Building Services" width={299} height={73} className="brand-logo" priority />
       </div>
       {NAV_ITEMS.map((item) => (
         <Link

@@ -8,7 +8,6 @@ import {
   PAY_FLAT,
   PAY_HOURLY,
   ROLE_OPTIONS,
-  SERVICE_LABOR_SHARE,
   calculate,
   money,
   pctFmt,
@@ -26,7 +25,6 @@ import type { PricingPolicyRow, SalespersonRow, ServiceRuleRow, TeamMemberRow } 
 import { PrintReport } from "./PrintReport";
 
 const STEP_TITLES = ["Job & Mode", "Labor", "Materials", "Commercial", "Review"];
-const SERVICE_OPTIONS = Object.keys(SERVICE_LABOR_SHARE);
 const NUMERIC_KEYS = new Set([
   "unitQuantity", "chemicals", "machine", "consumables", "water", "vehicle",
   "overhead", "commission", "targetProfit", "minCharge", "discount", "tax", "proposedPrice",
@@ -119,7 +117,7 @@ export function CalculatorWizard({ userId, policy, salespeople, serviceRules, te
 
   const [form, setForm] = useState<FormState>(() => ({
     client: "", location: "", invoice: "", date: todayIso(),
-    salesperson: "", service: SERVICE_OPTIONS[0], pricingMode: MODE_HOURLY, unitLabel: "m2", unitQuantity: "",
+    salesperson: "", service: serviceRules[0]?.service_name ?? "", pricingMode: MODE_HOURLY, unitLabel: "m2", unitQuantity: "",
     technicians: Array.from({ length: N_TECHS }, emptyTechForm),
     chemicals: "", machine: "", consumables: "", water: "", vehicle: "",
     overhead: String(policy?.overhead_pct ?? 12),
@@ -136,9 +134,14 @@ export function CalculatorWizard({ userId, policy, salespeople, serviceRules, te
     [salespeople, salesNamesFromHistory]
   );
 
+  function laborBenchmarkFor(service: string): number | null {
+    const rule = serviceRules.find((r) => r.service_name === service);
+    return rule ? rule.labor / 100 : null;
+  }
+
   const liveResult = useMemo<CalculationResult | null>(() => {
     try {
-      return calculate(collectInputs(form));
+      return calculate(collectInputs(form), laborBenchmarkFor(form.service));
     } catch {
       return null;
     }
@@ -183,6 +186,14 @@ export function CalculatorWizard({ userId, policy, salespeople, serviceRules, te
     });
   }
 
+  function addTechnician() {
+    setForm((f) => ({ ...f, technicians: [...f.technicians, emptyTechForm()] }));
+  }
+
+  function removeTechnician(i: number) {
+    setForm((f) => ({ ...f, technicians: f.technicians.filter((_, idx) => idx !== i) }));
+  }
+
   function onTechNameBlur(i: number) {
     const t = form.technicians[i];
     const info = team.find((m) => m.name.trim().toLowerCase() === t.name.trim().toLowerCase());
@@ -214,7 +225,7 @@ export function CalculatorWizard({ userId, policy, salespeople, serviceRules, te
   function runCalculate(): CalculationResult | null {
     let r: CalculationResult;
     try {
-      r = calculate(collectInputs(form));
+      r = calculate(collectInputs(form), laborBenchmarkFor(form.service));
     } catch (e) {
       alert("Cannot calculate:\n\n" + (e instanceof ValidationError || e instanceof Error ? e.message : String(e)));
       return null;
@@ -315,7 +326,14 @@ export function CalculatorWizard({ userId, policy, salespeople, serviceRules, te
           />
         )}
         {step === 1 && (
-          <StepLabor form={form} team={team} onTechChange={onTechChange} onTechNameBlur={onTechNameBlur} />
+          <StepLabor
+            form={form}
+            team={team}
+            onTechChange={onTechChange}
+            onTechNameBlur={onTechNameBlur}
+            onAddTechnician={addTechnician}
+            onRemoveTechnician={removeTechnician}
+          />
         )}
         {step === 2 && <StepMaterials form={form} errors={errors} onNumeric={onNumericChange} />}
         {step === 3 && <StepCommercial form={form} errors={errors} onNumeric={onNumericChange} />}
@@ -369,7 +387,6 @@ function StepJobMode({
   onSalesperson: (v: string) => void;
   onNumeric: (k: keyof FormState, v: string) => void;
 }) {
-  const share = SERVICE_LABOR_SHARE[form.service];
   const rule = serviceRules.find((r) => r.service_name === form.service);
   return (
     <div>
@@ -396,13 +413,13 @@ function StepJobMode({
         <div className="field">
           <label htmlFor="f_service">Service category</label>
           <select id="f_service" value={form.service} onChange={(e) => onField("service", e.target.value)}>
-            {SERVICE_OPTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s}
+            {serviceRules.map((r) => (
+              <option key={r.service_name} value={r.service_name}>
+                {r.service_name}
               </option>
             ))}
           </select>
-          <div className="hint">{share !== undefined ? `Typical labor share: ${Math.round(share * 100)}%` : ""}</div>
+          <div className="hint">{rule ? `Typical labor share: ${rule.labor}%` : ""}</div>
         </div>
         <div className="field">
           <label htmlFor="f_invoice">Invoice #</label>
@@ -490,11 +507,15 @@ function StepLabor({
   team,
   onTechChange,
   onTechNameBlur,
+  onAddTechnician,
+  onRemoveTechnician,
 }: {
   form: FormState;
   team: TeamMemberRow[];
   onTechChange: (i: number, patch: Partial<TechnicianForm>) => void;
   onTechNameBlur: (i: number) => void;
+  onAddTechnician: () => void;
+  onRemoveTechnician: (i: number) => void;
 }) {
   return (
     <div>
@@ -502,7 +523,7 @@ function StepLabor({
         <div className="icon">♟</div>
         <div>
           <div className="title">Labor</div>
-          <div className="subtitle">Up to {N_TECHS} people</div>
+          <div className="subtitle">{form.technicians.length} pessoa(s)</div>
         </div>
       </div>
       <div style={{ overflowX: "auto" }}>
@@ -516,6 +537,7 @@ function StepLabor({
               <th>Actual h</th>
               <th>Rate $/h</th>
               <th>Flat $</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -558,10 +580,28 @@ function StepLabor({
                 <td>
                   <input type="number" style={{ width: 70 }} value={t.flatAmount} onChange={(e) => onTechChange(i, { flatAmount: e.target.value })} />
                 </td>
+                <td>
+                  {form.technicians.length > 1 && (
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      style={{ padding: "4px 10px", fontSize: 12 }}
+                      onClick={() => onRemoveTechnician(i)}
+                      title="Remover"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
+      <div className="btn-row" style={{ marginTop: 10 }}>
+        <button type="button" className="btn btn-secondary" onClick={onAddTechnician}>
+          + Add technician
+        </button>
       </div>
       <div className="note-box">Leave Actual h blank while quoting. For Flat pay, hours are optional and used only for efficiency tracking.</div>
       <datalist id="teamNamesList">
