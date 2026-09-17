@@ -8,6 +8,7 @@ import type { ProfileRow } from "@/lib/supabase/types";
 
 const NAV_ITEMS = [
   { href: "/calculator", label: "▦ Calculator" },
+  { href: "/fixed-price", label: "⏱ Fixed Price" },
   { href: "/history", label: "◷ History" },
   { href: "/dashboard", label: "▥ Dashboard" },
   { href: "/management", label: "⚙ Management" },

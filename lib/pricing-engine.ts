@@ -345,3 +345,66 @@ export function legacyTextToRows(text: string): LegacyHistoryRow[] {
     return row;
   });
 }
+
+// ============================================================================
+// FIXED PRICE ENGINE - "com esse valor fixo, quantas horas dá pra gastar com a
+// equipe sem perder dinheiro?" Motor separado do de cima; não compartilha
+// estado nem afeta a calculadora principal.
+// ============================================================================
+export interface FixedPriceInputs {
+  fixedValue: number;
+  hourlyCost: number;
+  additionalCosts: number;
+  desiredMarginPct: number; // fração (0.20 = 20%)
+  hours: number;
+}
+
+export type FixedPriceStatus = "green" | "yellow" | "red";
+
+export interface FixedPriceResult {
+  laborCost: number;
+  totalCost: number;
+  profit: number;
+  marginPct: number; // fração, pode ser negativa
+  remainingValue: number;
+  maxHoursBreakeven: number;
+  maxHoursRecommended: number;
+  status: FixedPriceStatus;
+  statusLabel: string;
+  statusColor: string;
+}
+
+export function calculateFixedPrice(inp: FixedPriceInputs): FixedPriceResult {
+  const laborCost = round2(Math.max(0, inp.hourlyCost) * Math.max(0, inp.hours));
+  const totalCost = round2(laborCost + Math.max(0, inp.additionalCosts));
+  const profit = round2(inp.fixedValue - totalCost);
+  const marginPct = inp.fixedValue > 0 ? profit / inp.fixedValue : 0;
+  const remainingValue = profit;
+
+  const maxHoursBreakeven = inp.hourlyCost > 0 ? Math.max(0, (inp.fixedValue - inp.additionalCosts) / inp.hourlyCost) : 0;
+  const maxHoursRecommended =
+    inp.hourlyCost > 0 ? Math.max(0, (inp.fixedValue * (1 - inp.desiredMarginPct) - inp.additionalCosts) / inp.hourlyCost) : 0;
+
+  let status: FixedPriceStatus;
+  let statusLabel: string;
+  let statusColor: string;
+  if (marginPct < 0) {
+    status = "red";
+    statusLabel = "RED - Loss";
+    statusColor = "#B00020";
+  } else if (marginPct < inp.desiredMarginPct) {
+    status = "yellow";
+    statusLabel = "YELLOW - Below target margin";
+    statusColor = "#B8860B";
+  } else {
+    status = "green";
+    statusLabel = "GREEN - Within target margin";
+    statusColor = "#1E7F3C";
+  }
+
+  return {
+    laborCost, totalCost, profit, marginPct, remainingValue,
+    maxHoursBreakeven: round2(maxHoursBreakeven), maxHoursRecommended: round2(maxHoursRecommended),
+    status, statusLabel, statusColor,
+  };
+}
