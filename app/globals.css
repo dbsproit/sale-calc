@@ -85,6 +85,14 @@ input[type=range] {
   width: 100%; height: 6px; border-radius: 3px; background: #E9EDF3; accent-color: var(--accent); cursor: pointer;
 }
 input.invalid { border-color: var(--red); background: #FFF0F1; }
+.autocomplete { position: relative; }
+.autocomplete-menu {
+  position: absolute; top: 100%; left: 0; right: 0; z-index: 50; margin-top: 4px;
+  background: #fff; border: 1px solid var(--border); border-radius: 6px;
+  max-height: 220px; overflow-y: auto; box-shadow: 0 6px 16px rgba(14, 23, 38, 0.12);
+}
+.autocomplete-item { padding: 8px 10px; font-size: 14px; cursor: pointer; }
+.autocomplete-item:hover { background: var(--soft-blue); }
 .field-error { color: var(--red); font-size: 11px; font-weight: 700; min-height: 14px; margin-top: 3px; }
 .hint { color: var(--muted); font-size: 12px; margin-top: 4px; }
 .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; }

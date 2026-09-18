@@ -23,6 +23,7 @@ import {
 import { createClient } from "@/lib/supabase/client";
 import type { PricingPolicyRow, SalespersonRow, ServiceRuleRow, TeamMemberRow } from "@/lib/supabase/types";
 import { PrintReport } from "./PrintReport";
+import { Autocomplete } from "@/components/ui/Autocomplete";
 
 const STEP_TITLES = ["Job & Mode", "Labor", "Materials", "Commercial", "Review"];
 const NUMERIC_KEYS = new Set([
@@ -399,11 +400,11 @@ function StepJobMode({
       <div className="field-grid">
         <div className="field">
           <label htmlFor="f_client">Client</label>
-          <input id="f_client" type="text" list="clientNamesList" value={form.client} onChange={(e) => onField("client", e.target.value)} />
+          <Autocomplete id="f_client" value={form.client} onChange={(v) => onField("client", v)} options={clients} />
         </div>
         <div className="field">
           <label htmlFor="f_salesperson">Salesperson</label>
-          <input id="f_salesperson" type="text" list="salespersonNamesList" value={form.salesperson} onChange={(e) => onSalesperson(e.target.value)} />
+          <Autocomplete id="f_salesperson" value={form.salesperson} onChange={onSalesperson} options={salesNames} />
           <div className="hint">used for the real commission</div>
         </div>
         <div className="field">
@@ -484,17 +485,6 @@ function StepJobMode({
         </div>
       )}
       <div className="note-box">Cost is still built bottom-up from labor + materials. Per-unit mode only changes how the final price is quoted.</div>
-
-      <datalist id="clientNamesList">
-        {clients.map((n) => (
-          <option key={n} value={n} />
-        ))}
-      </datalist>
-      <datalist id="salespersonNamesList">
-        {salesNames.map((n) => (
-          <option key={n} value={n} />
-        ))}
-      </datalist>
     </div>
   );
 }
@@ -544,13 +534,12 @@ function StepLabor({
             {form.technicians.map((t, i) => (
               <tr key={i}>
                 <td>
-                  <input
-                    type="text"
-                    list="teamNamesList"
+                  <Autocomplete
                     style={{ width: 120 }}
                     value={t.name}
-                    onChange={(e) => onTechChange(i, { name: e.target.value })}
+                    onChange={(v) => onTechChange(i, { name: v })}
                     onBlur={() => onTechNameBlur(i)}
+                    options={team.map((m) => m.name)}
                   />
                 </td>
                 <td>
@@ -604,11 +593,6 @@ function StepLabor({
         </button>
       </div>
       <div className="note-box">Leave Actual h blank while quoting. For Flat pay, hours are optional and used only for efficiency tracking.</div>
-      <datalist id="teamNamesList">
-        {team.map((m) => (
-          <option key={m.id} value={m.name} />
-        ))}
-      </datalist>
     </div>
   );
 }
